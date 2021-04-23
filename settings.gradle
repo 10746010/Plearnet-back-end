@@ -1,0 +1,2 @@
+rootProject.name = 'plearnet'
+include 'modules:plearnet-config', 'modules:plearnet-database-config'

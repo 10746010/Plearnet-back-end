@@ -1,0 +1,10 @@
+server:
+  ip: 211.75.1.204
+  delegate-port: 50000
+  file:
+    name: file
+    path: 'D:\plearnet\UploadFile\${server.file.name}\'
+logging:
+  level:
+    sqltiming: DEBUG
+    resultsettable: DEBUG

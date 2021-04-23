@@ -1,0 +1,52 @@
+debug: true
+spring:
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+  profiles:
+    active: local
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 250MB
+  datasource:
+    type: com.mchange.v2.c3p0.ComboPooledDataSource
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: ${plearnet.database.url}
+    username: ${plearnet.database.account}
+    password: ${plearnet.database.password}
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: true
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: ${spring.jpa.database-platform}
+        hbm2ddl:
+          auto: ${spring.jpa.hibernate.ddl-auto}
+        show_sql: ${spring.jpa.show-sql}
+        format_sql: ${spring.jpa.show-sql}
+server:
+  port: 8080
+  delegate-port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+  file:
+    url: 'http://${server.ip}:${server.delegate-port}${server.servlet.context-path}${server.file.name}'
+logging:
+  config: classpath:log4j2.yml
+  level:
+    jdbc:
+      sqlonly: off
+      audit: off
+      resultset: off
+      connection: off

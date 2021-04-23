@@ -1,0 +1,113 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'tw.edu.ntub.imd.plearnet'
+version = '1.0.0'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test) {
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+subprojects {
+    group = project.group
+    version = project.version
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Test) {
+        systemProperty 'file.encoding', 'UTF-8'
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            url 'http://140.131.115.47:8081/repository/maven-releases/'
+            credentials {
+                username "downloader"
+                password "c.42j0 zj4yk6bp6"
+            }
+        }
+    }
+
+    configurations {
+        providedRuntime
+        implementation.exclude module: 'spring-boot-starter-logging'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom('org.springframework.boot:spring-boot-dependencies:2.3.4.RELEASE')
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+configurations {
+    providedRuntime
+    implementation.exclude module: 'spring-boot-starter-logging'
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://140.131.115.47:8081/repository/maven-releases/'
+        credentials {
+            username "downloader"
+            password "c.42j0 zj4yk6bp6"
+        }
+    }
+}
+
+dependencies {
+    implementation project('modules:plearnet-config')
+    implementation project('modules:plearnet-database-config')
+    implementation 'tw.edu.ntub.birc:common:1.0.6'
+    implementation 'org.yaml:snakeyaml:1.26'
+    implementation 'org.apache.commons:commons-text:1.8'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
