@@ -5,6 +5,13 @@ spring:
     allow-bean-definition-overriding: true
   profiles:
     active: local
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    prefix: classpath:/templates
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
   servlet:
     multipart:
       max-file-size: 200MB
