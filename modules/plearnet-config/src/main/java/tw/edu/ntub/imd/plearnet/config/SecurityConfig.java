@@ -24,7 +24,7 @@ import java.util.Collections;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService ) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -38,18 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
         .authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/css/**", "/js/**","/images/**", "/webjars/**", "**/favicon.ico", "/login", "/login1").permitAll()
+        .antMatchers(HttpMethod.POST, "/css/**", "/js/**","/images/**", "/webjars/**", "**/favicon.ico", "/login").permitAll()
         .antMatchers("/").permitAll()
-        .antMatchers("/course").hasAnyAuthority("ADMIN")
-        .antMatchers("/searchCourse").hasAnyAuthority("ADMIN")
-        .antMatchers("/courseDetail").hasAnyAuthority("ADMIN")
-        .antMatchers("/teacher").hasAnyAuthority("ADMIN")
-        .antMatchers("/searchTeacher").hasAnyAuthority("ADMIN")
-        .antMatchers("/student").hasAnyAuthority("ADMIN")
-        .antMatchers("/searchStudent").hasAnyAuthority("ADMIN")
-        .antMatchers("/manageIndex").hasAnyAuthority("ADMIN")
-        .antMatchers("/admin").hasAnyAuthority("ADMIN")
-//        .anyRequest().authenticated()
+        .antMatchers("/register").permitAll()
         .and()
         .cors()
         .configurationSource(corsConfigurationSource())
@@ -58,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .usernameParameter("username")
         .passwordParameter("password")
         .loginProcessingUrl("/login")
-        .defaultSuccessUrl("/admin")
+        .defaultSuccessUrl("/home")
         .failureUrl("/login?error=true")
         .and()
         .logout().permitAll()
@@ -73,10 +64,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://211.75.1.204:50001",
-                "http://140.131.115.147:3000",
-                "http://140.131.115.156:3000",
-                "http://140.131.115.162:3000",
-                "http://140.131.115.163:3000",
                 "http://localhost:3000"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

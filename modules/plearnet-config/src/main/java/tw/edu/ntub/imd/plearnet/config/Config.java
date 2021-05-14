@@ -14,10 +14,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import tw.edu.ntub.imd.plearnet.config.parammapping.RenamingProcessor;
 import tw.edu.ntub.imd.plearnet.config.properties.FileProperties;
 
@@ -32,7 +29,7 @@ public class Config implements WebMvcConfigurer {
     @Autowired
     public Config(FileProperties fileProperties) {
         this.fileProperties = fileProperties;
-        System.out.println(new BCryptPasswordEncoder().encode("plearnet"));
+        System.out.println(new BCryptPasswordEncoder().encode("plearnetManager"));
     }
 
     @Bean
@@ -70,9 +67,6 @@ public class Config implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://211.75.1.204:50001",
-                        "http://140.131.115.147:3000",
-                        "http://140.131.115.162:3000",
-                        "http://140.131.115.163:3000",
                         "http://localhost:3000"
                 )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
