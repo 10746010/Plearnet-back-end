@@ -1,33 +1,54 @@
 body {
     background-image: url(../img/bg.jpg);
-    background-color: white;
-    width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-family: 微軟正黑體;
+    color: white;
 }
 
 .login {
-    align-items: center;
+    text-align: left;
 }
 
 .account {
-    align-items: center;
+    align-items: left;
 }
 
 .password {
-    align-items: center;
+    align-items: left;
 }
 
 .loginImg {
-    align-items: flex-end;
+    margin-left: 90px;
 }
 
 .title {
-    text-align: center;
+    text-align: left;
     color: white;
+    font-size: 50px;
 }
-    
+
+.text{
+    text-align:start;
+    margin-left: 60px;
+}
+
+.imgBg{
+    position: relative;
+    top: -500px;
+    right: -600px;
+}
+
+.inputbox{
+    text-align: left;
+    padding-top: 100px;
+}
+
+.content{
+    display: flex;
+}
+
+.left{
+    margin-left: 50px;
+}
+
+.registerImg{
+    margin-left: 120px;
+}
