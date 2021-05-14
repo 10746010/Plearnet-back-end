@@ -10,14 +10,20 @@ import org.springframework.web.servlet.ModelAndView;
 public class RouteController {
 //    private final
 
-    @GetMapping("/")
-    public ModelAndView index() {
+    @GetMapping("/login")
+    public ModelAndView login() {
         ModelAndView mav = new ModelAndView("/login");
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return mav;
     }
+
+//    @GetMapping("/self")
+//    public ModelAndView self() {
+//        ModelAndView mav = new ModelAndView("/self");
+//        return mav;
+//    }
 }
