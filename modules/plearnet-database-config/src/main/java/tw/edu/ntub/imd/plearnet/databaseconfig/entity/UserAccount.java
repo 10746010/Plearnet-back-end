@@ -1,6 +1,5 @@
 package tw.edu.ntub.imd.plearnet.databaseconfig.entity;
 
-
 import lombok.Data;
 import tw.edu.ntub.imd.plearnet.databaseconfig.Config;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.listener.UserAccountListener;
