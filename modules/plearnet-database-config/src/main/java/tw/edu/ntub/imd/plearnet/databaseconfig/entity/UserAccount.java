@@ -5,6 +5,7 @@ import tw.edu.ntub.imd.plearnet.databaseconfig.Config;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.listener.UserAccountListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -42,5 +43,29 @@ public class UserAccount {
      */
     @Column(name = "id", length = 11, nullable = true)
     private Integer id;
+
+    /**
+     * 用戶名
+     *
+     * @since 1.0.0
+     */
+    @Column(name = "name",length = 10,nullable = false)
+    private String name;
+
+    /**
+     * 性別(0:男，1:女)
+     *
+     * @since 1.0.0
+     */
+    @Column(name = "sex",length = 1,nullable = false)
+    private String sex;
+
+    /**
+     * 註冊時間
+     *
+     * @since 1.0.0
+     */
+    @Column(name = "registered",nullable = false)
+    private LocalDateTime register;
 
 }
