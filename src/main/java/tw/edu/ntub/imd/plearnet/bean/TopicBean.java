@@ -11,7 +11,7 @@ public class TopicBean {
     private String content;
     private float view;
     private float likes;
-    private LocalDateTime create_date;
-    private LocalDateTime edit_date;
-    private Integer tag_id;
+    private LocalDateTime createDate;
+    private LocalDateTime editDate;
+    private Integer tagId;
 }
