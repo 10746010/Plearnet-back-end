@@ -34,6 +34,6 @@ public class Tag {
      * @since 1.0.0
      */
     @Column(name = "tag_type", length = 1, nullable = false)
-    private String tag_type;
+    private String tagType;
 
 }
