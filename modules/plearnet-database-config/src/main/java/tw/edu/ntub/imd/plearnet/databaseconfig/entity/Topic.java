@@ -60,7 +60,7 @@ public class Topic {
      * @Since 1.0.1
      */
     @Column(name = "create_date", nullable = false)
-    private LocalDateTime create_date;
+    private LocalDateTime createDate;
 
     /**
      * 最後編輯時間
@@ -68,7 +68,7 @@ public class Topic {
      * @Since 1.0.1
      */
     @Column(name = "edit_date",nullable = false)
-    private LocalDateTime edit_date;
+    private LocalDateTime editDate;
 
     /**
      * tag_id
@@ -76,6 +76,6 @@ public class Topic {
      * @Since 1.0.1
      */
     @Column(name = "tag_id", length = 11, nullable = false)
-    private Integer tag_id;
+    private Integer tagId;
 
 }
