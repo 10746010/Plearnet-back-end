@@ -3,15 +3,16 @@ package tw.edu.ntub.imd.plearnet.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import tw.edu.ntub.imd.plearnet.bean.TopicBean;
 import tw.edu.ntub.imd.plearnet.service.TopicService;
+import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
 import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
 import tw.edu.ntub.imd.plearnet.util.json.object.ObjectData;
+
+import javax.validation.Valid;
 
 @AllArgsConstructor
 @RestController
@@ -32,6 +33,16 @@ public class TopicController {
         return ResponseEntityBuilder.success()
                 .message("查詢成功")
                 .data(arrayData)
+                .build();
+    }
+
+    @PostMapping(path = "/postNote")
+    public ResponseEntity<String> createTopic(@Valid @RequestBody TopicBean topicBean,
+                                              BindingResult bindingResult){
+        BindingResultUtils.validate(bindingResult);
+        topicService.save(topicBean);
+        return ResponseEntityBuilder.success()
+                .message("新增成功")
                 .build();
     }
 }
