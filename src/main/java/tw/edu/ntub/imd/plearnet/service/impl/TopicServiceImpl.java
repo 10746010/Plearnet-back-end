@@ -23,7 +23,10 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicBean, Topic, String> 
     }
 
     @Override
-    public TopicBean save(TopicBean topicBean){return null;}
+    public TopicBean save(TopicBean topicBean){
+        Topic topic = topicDAO.save(transformer.transferToEntity(topicBean));
+        return transformer.transferToBean(topic);
+    }
 
     @Override
     public List<TopicBean> searchAll(Integer tag){
