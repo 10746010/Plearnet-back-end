@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags" lang="zh-TW">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../static/css/login.css">
+    <title>登入</title>
+    <link rel="stylesheet" th:href="@{/static/css/login.css}" href="../static/css/login.css">
 </head>
 
 <body>
-    <div class="login">
-        <form name="formLogin">
+    <div id="login" class="login">
+        <form name="formLogin" class="my-5 px-5" th:action="@{/login}" method="post">
             <div class="contents">
                 <div class="left">
-                    <div class="title">
-                        Plearnet
-                        <br>
+                    <div class="title">Plearnet<br>
                     </div>
                     <div class="text">
                         <label>登入</label>
@@ -23,12 +21,12 @@
                     <div class="inputbox">
                         <div class="account">
                             <br>
-                            <input type="text" placeholder="請輸入帳號" value="">
+                            <input id="username" name="username" type="text"  placeholder="請輸入帳號" value="">
                         </div>
 
                         <div class="password">
                             <br>
-                            <input type="password" placeholder="請輸入密碼" value="">
+                            <input id="password" name="password" type="password" placeholder="請輸入密碼" value="">
                         </div>
                         <div class="loginImg">
                             <img src="../static/img/lb.png" width="100px">
@@ -46,7 +44,6 @@
                     </div>
                 </div>
             </div>
-
         </form>
     </div>
 </body>

@@ -14,7 +14,7 @@ public class RouteController {
 
 //    @GetMapping("/")
 //    public ModelAndView index() {
-//        ModelAndView mav = new ModelAndView("/login");
+//        ModelAndView mav = new ModelAndView("/login_new");
 //        return mav;
 //    }
 
@@ -38,6 +38,20 @@ public class RouteController {
         return mav;
     }
 
+//    @GetMapping("/register")
+//    public ModelAndView register() {
+//        ModelAndView mav = new ModelAndView("/register_new");
+//        return mav;
+//    }
+
+    @GetMapping("/register")
+    public ResponseEntity<String> register() {
+        ArrayData dataNode = new ArrayData();
+        return ResponseEntityBuilder.success()
+                .message("成功進入註冊頁面")
+                .data(dataNode)
+                .build();
+    }
 //    @GetMapping("/self")
 //    public ModelAndView self() {
 //        ModelAndView mav = new ModelAndView("/self");
