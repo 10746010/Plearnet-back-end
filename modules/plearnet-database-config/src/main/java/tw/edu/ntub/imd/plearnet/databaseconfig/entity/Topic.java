@@ -19,6 +19,7 @@ public class Topic {
      * @Since 1.0.1
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
