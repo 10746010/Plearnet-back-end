@@ -37,27 +37,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-        .authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/css/**", "/js/**","/images/**", "/webjars/**", "**/favicon.ico", "/login").permitAll()
-        .antMatchers("/").permitAll()
-        .antMatchers("/register").permitAll()
-        .and()
-        .cors()
-        .configurationSource(corsConfigurationSource())
-        .and()
-        .formLogin().loginPage("/login").permitAll()
-        .usernameParameter("username")
-        .passwordParameter("password")
-        .loginProcessingUrl("/login")
-        .defaultSuccessUrl("/home")
-        .failureUrl("/login?error=true")
-        .and()
-        .logout().permitAll()
-        .logoutUrl("/logout")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-        .logoutSuccessUrl("/login?logout")
-        .and()
-        .csrf().disable();
+            .authorizeRequests()
+            .antMatchers(HttpMethod.POST, "/css/**", "/js/**","/images/**", "/webjars/**", "**/favicon.ico", "/login").permitAll()
+            .antMatchers("/").permitAll()
+            .antMatchers("/register").permitAll()
+            .and()
+            .cors()
+            .configurationSource(corsConfigurationSource())
+            .and()
+            .formLogin().loginPage("/login").permitAll()
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .loginProcessingUrl("/login")
+            .defaultSuccessUrl("/home")
+            .failureUrl("/login?error=true")
+            .and()
+            .logout().permitAll()
+            .logoutUrl("/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+            .logoutSuccessUrl("/login?logout")
+            .and()
+            .csrf().disable();
     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
