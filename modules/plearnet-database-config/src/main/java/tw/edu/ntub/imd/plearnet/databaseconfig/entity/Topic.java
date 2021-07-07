@@ -79,4 +79,11 @@ public class Topic {
     @Column(name = "tag_id", length = 11, nullable = false)
     private Integer tagId;
 
+    /**
+     * 作者
+     *
+     * @Since 1.0.1
+     */
+    @Column(name = "author", nullable = false)
+    private Integer author;
 }
