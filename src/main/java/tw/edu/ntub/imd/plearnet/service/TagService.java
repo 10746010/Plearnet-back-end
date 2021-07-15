@@ -1,4 +1,6 @@
 package tw.edu.ntub.imd.plearnet.service;
 
-public interface TagService {
+import tw.edu.ntub.imd.plearnet.bean.TagBean;
+
+public interface TagService extends BaseService<TagBean, String>{
 }
