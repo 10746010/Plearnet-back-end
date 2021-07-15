@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import tw.edu.ntub.imd.plearnet.bean.TagBean;
 import tw.edu.ntub.imd.plearnet.bean.TopicBean;
+import tw.edu.ntub.imd.plearnet.service.TagService;
 import tw.edu.ntub.imd.plearnet.service.TopicService;
 import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
 import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
@@ -19,6 +21,23 @@ import javax.validation.Valid;
 @RequestMapping(path = "/topic")
 public class TopicController {
     private final TopicService topicService;
+    private final TagService tagService;
+
+    @GetMapping(path = "/tagList")
+    public ResponseEntity<String> tagList(@RequestParam(name = "tagType") Integer tagType){
+       ArrayData arrayData = new ArrayData();
+
+       for(TagBean tagBean : tagService.searchAll(tagType)){
+           ObjectData objectData = arrayData.addObject();
+           objectData.add("id",tagBean.getId());
+           objectData.add("name",tagBean.getName());
+       }
+
+       return ResponseEntityBuilder.success()
+               .message("查詢成功")
+               .data(arrayData)
+               .build();
+    }
 
     @GetMapping(path = "/tagSearch")
     public ResponseEntity<String> tagSearch(@RequestParam(name = "tag") Integer tag){
