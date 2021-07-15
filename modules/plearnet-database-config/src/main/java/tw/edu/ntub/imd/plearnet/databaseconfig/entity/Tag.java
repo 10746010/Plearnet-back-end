@@ -33,7 +33,7 @@ public class Tag {
      *
      * @since 1.0.0
      */
-    @Column(name = "tag_type", length = 1, nullable = false)
-    private String tagType;
+    @Column(name = "tag_type", nullable = false)
+    private Integer tagType;
 
 }

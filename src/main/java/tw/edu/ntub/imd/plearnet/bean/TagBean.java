@@ -6,5 +6,5 @@ import lombok.Data;
 public class TagBean {
     private Integer id;
     private String name;
-    private String tagType;
+    private Integer tagType;
 }
