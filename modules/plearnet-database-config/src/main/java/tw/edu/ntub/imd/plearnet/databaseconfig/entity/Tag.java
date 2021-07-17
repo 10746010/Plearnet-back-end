@@ -18,6 +18,7 @@ public class Tag {
      */
     @Id
     @Column(name = "id", length = 11, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**

@@ -23,7 +23,8 @@ public class TagServiceImpl extends BaseServiceImpl<TagBean, Tag, String> implem
 
     @Override
     public TagBean save(TagBean tagBean){
-        return null;
+        Tag tag = tagDAO.save(transformer.transferToEntity(tagBean));
+        return transformer.transferToBean(tag);
     }
 
     @Override
