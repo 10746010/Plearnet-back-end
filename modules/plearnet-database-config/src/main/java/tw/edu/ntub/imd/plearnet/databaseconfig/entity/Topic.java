@@ -7,6 +7,7 @@ import tw.edu.ntub.imd.plearnet.databaseconfig.entity.listener.TopicListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -86,4 +87,14 @@ public class Topic {
      */
     @Column(name = "author", nullable = false)
     private Integer author;
+
+    /**
+     * topic_id
+     *
+     * @Since 1.0.1
+     * @see Message
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    private List<Message> messageByTopicId;
+
 }
