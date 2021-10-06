@@ -1,9 +1,11 @@
 package tw.edu.ntub.imd.plearnet.bean;
 
 import lombok.Data;
+import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Message;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class TopicBean {
@@ -23,4 +25,8 @@ public class TopicBean {
     @NotNull(message = "筆記分類 - 未填寫")
     private Integer tagId;
     private Integer author;
+    private List<MessageBean> messageBeanList;
+    private Integer messageId;
+    private Integer userId;
+    private String messageContent;
 }

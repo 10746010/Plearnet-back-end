@@ -2,6 +2,7 @@ package tw.edu.ntub.imd.plearnet.service.impl;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tw.edu.ntub.imd.plearnet.bean.TagBean;
 import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.UserAccountDAO;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.UserAccount;
@@ -9,6 +10,7 @@ import tw.edu.ntub.imd.plearnet.service.UserAccountService;
 import tw.edu.ntub.imd.plearnet.service.transformer.UserAccountTransformer;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, UserAccount, String> implements UserAccountService {
@@ -55,6 +57,12 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
 //        }
 //        return CollectionUtils.map(userAccountList, transformer::transferToBean);
 //    }
+
+    @Override
+    public Optional<UserAccountBean> getById(Integer id) {
+        return Optional.empty();
+
+    }
 
     @Override
     public UserAccountBean save(UserAccountBean userAccountBean) {

@@ -9,6 +9,7 @@ import tw.edu.ntub.imd.plearnet.service.TagService;
 import tw.edu.ntub.imd.plearnet.service.transformer.TagTransformer;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TagServiceImpl extends BaseServiceImpl<TagBean, Tag, String> implements TagService {
@@ -25,6 +26,12 @@ public class TagServiceImpl extends BaseServiceImpl<TagBean, Tag, String> implem
     public TagBean save(TagBean tagBean){
         Tag tag = tagDAO.save(transformer.transferToEntity(tagBean));
         return transformer.transferToBean(tag);
+    }
+
+    @Override
+    public Optional<TagBean> getById(Integer id) {
+        return Optional.empty();
+
     }
 
     @Override
