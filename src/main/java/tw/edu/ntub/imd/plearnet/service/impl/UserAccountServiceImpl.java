@@ -1,5 +1,6 @@
 package tw.edu.ntub.imd.plearnet.service.impl;
 
+import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tw.edu.ntub.imd.plearnet.bean.TagBean;
@@ -60,8 +61,14 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
 
     @Override
     public Optional<UserAccountBean> getById(Integer id) {
-        return Optional.empty();
-
+        Optional<UserAccount> optional = userAccountDAO.findById(id);
+        if (optional.isPresent()) {
+            UserAccount userAccount = optional.get();
+            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
+            return Optional.of(userAccountBean);
+        } else{
+            return Optional.empty();
+        }
     }
 
     @Override
