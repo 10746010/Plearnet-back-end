@@ -7,9 +7,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import tw.edu.ntub.imd.plearnet.bean.TagBean;
 import tw.edu.ntub.imd.plearnet.bean.TopicBean;
+import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Topic;
 import tw.edu.ntub.imd.plearnet.service.TagService;
 import tw.edu.ntub.imd.plearnet.service.TopicService;
+import tw.edu.ntub.imd.plearnet.service.UserAccountService;
 import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
 import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class TopicController {
     private final TopicService topicService;
     private final TagService tagService;
+    private final UserAccountService userAccountService;
 
     @GetMapping(path = "/topic")
         public ResponseEntity<String> topicGet(@RequestParam(name = "topicID") Integer topicID){
@@ -34,6 +37,15 @@ public class TopicController {
                 objectData.add("message_id",topicBean.getMessageId());
                 objectData.add("user_id", topicBean.getUserId());
                 objectData.add("message_content", topicBean.getMessageContent());
+
+                Integer userId = topicBean.getUserId();
+
+                Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(userId);
+
+                userAccountBeanOptional.orElseThrow(() ->new RuntimeException("查無此用戶"));
+                UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+                objectData.add("user_name", userAccountBean.getName());
             }
 
             Optional<TopicBean> topicBeanOptional = topicService.getById(topicID);
@@ -49,6 +61,15 @@ public class TopicController {
             objectData.add("create_date", topicBean.getCreateDate());
             objectData.add("edit_date", topicBean.getEditDate());
             objectData.add("author",topicBean.getAuthor());
+
+            Integer userId = topicBean.getAuthor();
+
+            Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(userId);
+
+            userAccountBeanOptional.orElseThrow(() ->new RuntimeException("查無此用戶"));
+            UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+            objectData.add("author_name", userAccountBean.getName());
 
             return  ResponseEntityBuilder.success()
                     .message("查詢成功")
