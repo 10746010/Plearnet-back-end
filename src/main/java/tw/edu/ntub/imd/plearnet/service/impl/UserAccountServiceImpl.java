@@ -3,7 +3,7 @@ package tw.edu.ntub.imd.plearnet.service.impl;
 import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tw.edu.ntub.imd.plearnet.bean.TagBean;
+import tw.edu.ntub.birc.common.util.CollectionUtils;
 import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.UserAccountDAO;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.UserAccount;
@@ -37,10 +37,13 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
         return transformer.transferToBean(userAccountDAO.save(userAccount));
     }
 
-    @Override
-    public List<UserAccountBean> searchAll(Integer tag) {
-        return null;
-    }
+//    @Override
+//    public List<UserAccountBean> searchAll() {
+//        List<UserAccount> userAccountList;
+//        userAccountList = userAccountDAO.findAll();
+//        return CollectionUtils.map(userAccountDAO.findAll(), transformer::transferToBean);
+//
+//    }
 
     @Override
     public void update(String id) {
@@ -79,6 +82,19 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
         } else{
             return Optional.empty();
         }
+        if(optional.isPresent()) {
+            UserAccount userAccount = optional.get();
+            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
+            return Optional.of(userAccountBean);
+        }else{
+            return Optional.empty();
+        }
+
+    }
+
+    @Override
+    public List<UserAccountBean searchAll() {
+        return CollectionUtils.map(userAccountDAO.findAll(), transformer::transferToBean);
     }
 
     @Override
