@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import tw.edu.ntub.imd.plearnet.bean.MessageBean;
 import tw.edu.ntub.imd.plearnet.bean.TagBean;
 import tw.edu.ntub.imd.plearnet.bean.TopicBean;
 import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
+import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Message;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Topic;
+import tw.edu.ntub.imd.plearnet.service.MessageService;
 import tw.edu.ntub.imd.plearnet.service.TagService;
 import tw.edu.ntub.imd.plearnet.service.TopicService;
 import tw.edu.ntub.imd.plearnet.service.UserAccountService;
@@ -27,6 +30,7 @@ public class TopicController {
     private final TopicService topicService;
     private final TagService tagService;
     private final UserAccountService userAccountService;
+    private final MessageService messageService;
 
     @GetMapping(path = "/topic")
         public ResponseEntity<String> topicGet(@RequestParam(name = "topicID") Integer topicID){
@@ -118,6 +122,16 @@ public class TopicController {
         topicService.save(topicBean);
         return ResponseEntityBuilder.success()
                 .message("新增成功")
+                .build();
+    }
+
+    @PostMapping(path = "/postMessage")
+    public ResponseEntity<String> createMessage(@Valid @RequestBody MessageBean messageBean,
+                                                BindingResult bindingResult){
+        BindingResultUtils.validate(bindingResult);
+        messageService.save(messageBean);
+        return ResponseEntityBuilder.success()
+                .message("留言成功")
                 .build();
     }
 }
