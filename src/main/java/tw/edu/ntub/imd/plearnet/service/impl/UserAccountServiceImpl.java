@@ -26,20 +26,30 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Override
-//    public UserAccountBean save(UserAccountBean userAccountBean) {
-//        if (userAccountDAO.existsByUserid(userAccountBean.getUserid())) {
-//            throw new DuplicateCreateException("此帳號已被註冊");
+    @Override
+    public UserAccountBean save(UserAccountBean userAccountBean) {
+//        if (userAccountDAO.existsById(userAccountBean.getId())) {
+//            throw new DuplicateCreateException("此帳號已被註冊")
 //        }
-//        UserAccount userAccount = userAccountDAO.saveAndFlush(transformer.transferToEntity(userAccountBean));
-//        userAccount.setUserPwd(passwordEncoder.encode(userAccountBean.getUserPwd()));
-//        userAccountDAO.save(userAccount);
-//        return transformer.transferToBean(userAccountDAO.save(userAccount));
-//    }
+        UserAccount userAccount = userAccountDAO.saveAndFlush(transformer.transferToEntity(userAccountBean));
+        userAccount.setPassword(passwordEncoder.encode(userAccountBean.getPassword()));
+        userAccountDAO.save(userAccount);
+        return transformer.transferToBean(userAccountDAO.save(userAccount));
+    }
 
     @Override
     public List<UserAccountBean> searchAll(Integer tag) {
         return null;
+    }
+
+    @Override
+    public void update(String id) {
+        Optional<UserAccount> optional = userAccountDAO.findById(id);
+        if(optional.isPresent()) {
+            UserAccount userAccount = optional.get();
+//            userAccount.setAvailable(true);
+            userAccountDAO.update(userAccount);
+        }
     }
 
 //    @Override
