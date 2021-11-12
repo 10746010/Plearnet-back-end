@@ -1,8 +1,10 @@
 package tw.edu.ntub.imd.plearnet.service.impl;
 
+import tw.edu.ntub.birc.common.util.JavaBeanUtils;
 import tw.edu.ntub.imd.plearnet.bean.MessageBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.MessageDAO;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Message;
+import tw.edu.ntub.imd.plearnet.exception.NotFoundException;
 import tw.edu.ntub.imd.plearnet.service.MessageService;
 import tw.edu.ntub.imd.plearnet.service.transformer.MessageTransformer;
 
@@ -23,6 +25,18 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageBean, Message, St
     public MessageBean save(MessageBean messageBean){
         Message message = messageDAO.save(transformer.transferToEntity(messageBean));
         return transformer.transferToBean(message);
+    }
+
+    @Override
+    public void update(Integer id, MessageBean messageBean) {
+        Optional<Message> optional = messageDAO.findById(id);
+        if (optional.isPresent()) {
+            Message message = optional.get();
+            JavaBeanUtils.copy(messageBean, message);
+            messageDAO.update(message);
+        } else {
+            throw new NotFoundException("找不到資料, id = " + id);
+        }
     }
 
     @Override

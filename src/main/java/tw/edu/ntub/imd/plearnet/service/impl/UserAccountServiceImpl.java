@@ -3,10 +3,12 @@ package tw.edu.ntub.imd.plearnet.service.impl;
 import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tw.edu.ntub.birc.common.util.JavaBeanUtils;
 import tw.edu.ntub.imd.plearnet.bean.TagBean;
 import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.UserAccountDAO;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.UserAccount;
+import tw.edu.ntub.imd.plearnet.exception.NotFoundException;
 import tw.edu.ntub.imd.plearnet.service.UserAccountService;
 import tw.edu.ntub.imd.plearnet.service.transformer.UserAccountTransformer;
 
@@ -68,6 +70,18 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
             return Optional.of(userAccountBean);
         } else{
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public void update(Integer id, UserAccountBean userAccountBean) {
+        Optional<UserAccount> optional = userAccountDAO.findById(id);
+        if (optional.isPresent()) {
+            UserAccount userAccount = optional.get();
+            JavaBeanUtils.copy(userAccountBean, userAccount);
+            userAccountDAO.update(userAccount);
+        } else {
+            throw new NotFoundException("找不到資料, id = " + id);
         }
     }
 
