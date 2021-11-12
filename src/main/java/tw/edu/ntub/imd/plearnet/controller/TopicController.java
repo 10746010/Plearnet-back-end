@@ -134,4 +134,13 @@ public class TopicController {
                 .message("留言成功")
                 .build();
     }
+
+    @PatchMapping(path = "/editNote")
+    public ResponseEntity<String> updateTopic(@RequestBody TopicBean topicBean){
+        topicService.update(topicBean.getId(), topicBean);
+        return ResponseEntityBuilder.success()
+                .message("修改成功")
+                .build();
+    }
+
 }

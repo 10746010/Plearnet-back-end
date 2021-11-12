@@ -3,11 +3,13 @@ package tw.edu.ntub.imd.plearnet.service.impl;
 import net.bytebuddy.dynamic.DynamicType;
 import org.springframework.stereotype.Service;
 import tw.edu.ntub.birc.common.util.CollectionUtils;
+import tw.edu.ntub.birc.common.util.JavaBeanUtils;
 import tw.edu.ntub.imd.plearnet.bean.TopicBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.MessageDAO;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.TopicDAO;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Message;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Topic;
+import tw.edu.ntub.imd.plearnet.exception.NotFoundException;
 import tw.edu.ntub.imd.plearnet.service.TopicService;
 import tw.edu.ntub.imd.plearnet.service.transformer.TopicTransformer;
 
@@ -44,6 +46,18 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicBean, Topic, String> 
             return Optional.of(topicBean);
         } else{
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public void update(Integer id, TopicBean topicBean) {
+        Optional<Topic> optional = topicDAO.findById(id);
+        if (optional.isPresent()) {
+            Topic topic = optional.get();
+            JavaBeanUtils.copy(topicBean, topic);
+            topicDAO.update(topic);
+        } else {
+            throw new NotFoundException("找不到資料, id = " + id);
         }
     }
 
