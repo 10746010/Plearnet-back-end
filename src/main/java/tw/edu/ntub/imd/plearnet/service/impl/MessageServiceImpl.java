@@ -1,5 +1,6 @@
 package tw.edu.ntub.imd.plearnet.service.impl;
 
+import org.springframework.stereotype.Service;
 import tw.edu.ntub.birc.common.util.JavaBeanUtils;
 import tw.edu.ntub.imd.plearnet.bean.MessageBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.MessageDAO;
@@ -11,6 +12,7 @@ import tw.edu.ntub.imd.plearnet.service.transformer.MessageTransformer;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MessageServiceImpl extends BaseServiceImpl<MessageBean, Message, String> implements MessageService {
     private final MessageDAO messageDAO;
     private final MessageTransformer transformer;
