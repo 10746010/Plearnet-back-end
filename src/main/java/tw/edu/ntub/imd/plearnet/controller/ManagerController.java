@@ -3,11 +3,9 @@ package tw.edu.ntub.imd.plearnet.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tw.edu.ntub.imd.plearnet.bean.TagBean;
+import tw.edu.ntub.imd.plearnet.bean.TopicBean;
 import tw.edu.ntub.imd.plearnet.service.TagService;
 import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
 import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
@@ -29,4 +27,13 @@ public class ManagerController {
                 .message("新增成功")
                 .build();
     }
+
+    @PatchMapping(path = "/editTag")
+    public ResponseEntity<String> updateTag(@RequestBody TagBean tagBean){
+        tagService.update(tagBean.getId(), tagBean);
+        return ResponseEntityBuilder.success()
+                .message("修改成功")
+                .build();
+    }
+
 }
