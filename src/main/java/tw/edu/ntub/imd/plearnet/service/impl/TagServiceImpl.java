@@ -2,9 +2,13 @@ package tw.edu.ntub.imd.plearnet.service.impl;
 
 import org.springframework.stereotype.Service;
 import tw.edu.ntub.birc.common.util.CollectionUtils;
+import tw.edu.ntub.birc.common.util.JavaBeanUtils;
+import tw.edu.ntub.imd.plearnet.bean.MessageBean;
 import tw.edu.ntub.imd.plearnet.bean.TagBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.TagDAO;
+import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Message;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Tag;
+import tw.edu.ntub.imd.plearnet.exception.NotFoundException;
 import tw.edu.ntub.imd.plearnet.service.TagService;
 import tw.edu.ntub.imd.plearnet.service.transformer.TagTransformer;
 
@@ -26,6 +30,18 @@ public class TagServiceImpl extends BaseServiceImpl<TagBean, Tag, String> implem
     public TagBean save(TagBean tagBean){
         Tag tag = tagDAO.save(transformer.transferToEntity(tagBean));
         return transformer.transferToBean(tag);
+    }
+
+    @Override
+    public void update(Integer id, TagBean tagBean) {
+        Optional<Tag> optional = tagDAO.findById(id);
+        if (optional.isPresent()) {
+            Tag tag = optional.get();
+            JavaBeanUtils.copy(tagBean, tag);
+            tagDAO.update(tag);
+        } else {
+            throw new NotFoundException("找不到資料, id = " + id);
+        }
     }
 
     @Override
