@@ -1,6 +1,5 @@
 package tw.edu.ntub.imd.plearnet.service.impl;
 
-import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tw.edu.ntub.birc.common.util.CollectionUtils;
@@ -29,16 +28,16 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public UserAccountBean save(UserAccountBean userAccountBean) {
+//    @Override
+//    public UserAccountBean save(UserAccountBean userAccountBean) {
 //        if (userAccountDAO.existsById(userAccountBean.getId())) {
 //            throw new DuplicateCreateException("此帳號已被註冊")
 //        }
-        UserAccount userAccount = userAccountDAO.saveAndFlush(transformer.transferToEntity(userAccountBean));
-        userAccount.setPassword(passwordEncoder.encode(userAccountBean.getPassword()));
-        userAccountDAO.save(userAccount);
-        return transformer.transferToBean(userAccountDAO.save(userAccount));
-    }
+//        UserAccount userAccount = userAccountDAO.saveAndFlush(transformer.transferToEntity(userAccountBean));
+//        userAccount.setPassword(passwordEncoder.encode(userAccountBean.getPassword()));
+//        userAccountDAO.save(userAccount);
+//        return transformer.transferToBean(userAccountDAO.save(userAccount));
+//    }
 
 //    @Override
 //    public List<UserAccountBean> searchAll() {
@@ -48,15 +47,15 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
 //
 //    }
 
-    @Override
-    public void update(String id) {
-        Optional<UserAccount> optional = userAccountDAO.findById(id);
-        if(optional.isPresent()) {
-            UserAccount userAccount = optional.get();
+//    @Override
+//    public void update(String id) {
+//        Optional<UserAccount> optional = userAccountDAO.findById(id);
+//        if(optional.isPresent()) {
+//            UserAccount userAccount = optional.get();
 //            userAccount.setAvailable(true);
-            userAccountDAO.update(userAccount);
-        }
-    }
+//            userAccountDAO.update(userAccount);
+//        }
+//    }
 
 //    @Override
 //    public List<UserAccountBean> searchAll(Pager pager) {
@@ -75,30 +74,40 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
 //        return CollectionUtils.map(userAccountList, transformer::transferToBean);
 //    }
 
+//    @Override
+//    public Optional<UserAccountBean> getById(Integer id) {
+//        Optional<UserAccount> optional = userAccountDAO.findById(id);
+//        if (optional.isPresent()) {
+//            UserAccount userAccount = optional.get();
+//            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
+//            return Optional.of(userAccountBean);
+//        } else{
+//            return Optional.empty();
+//        }
+//        if(optional.isPresent()) {
+//            UserAccount userAccount = optional.get();
+//            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
+//            return Optional.of(userAccountBean);
+//        }else{
+//            return Optional.empty();
+//        }
+//
+//    }
+
     @Override
     public Optional<UserAccountBean> getById(Integer id) {
-        Optional<UserAccount> optional = userAccountDAO.findById(id);
-        if (optional.isPresent()) {
-            UserAccount userAccount = optional.get();
-            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
-            return Optional.of(userAccountBean);
-        } else{
-            return Optional.empty();
-        }
-        if(optional.isPresent()) {
-            UserAccount userAccount = optional.get();
-            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
-            return Optional.of(userAccountBean);
-        }else{
-            return Optional.empty();
-        }
-
+        return Optional.empty();
     }
 
     @Override
-    public List<UserAccountBean searchAll() {
-        return CollectionUtils.map(userAccountDAO.findAll(), transformer::transferToBean);
+    public List<UserAccountBean> searchAll(Integer tag) {
+        return null;
     }
+
+//    @Override
+//    public List<UserAccountBean searchAll() {
+//        return CollectionUtils.map(userAccountDAO.findAll(), transformer::transferToBean);
+//    }
 
     @Override
     public void update(Integer id, UserAccountBean userAccountBean) {
@@ -114,6 +123,17 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
 
     @Override
     public UserAccountBean save(UserAccountBean userAccountBean) {
-        return null;
+        String account = userAccountBean.getAccount();
+        String name = userAccountBean.getName();
+        String email = userAccountBean.getEmail();
+        String password = userAccountBean.getPassword();
+        String sex = userAccountBean.getSex();
+        System.out.println(account);
+        System.out.println(name);
+        System.out.println(email);
+        System.out.println(password);
+        System.out.println(sex);
+        UserAccount userAccount = userAccountDAO.save(transformer.transferToEntity(userAccountBean));
+        return transformer.transferToBean(userAccount);
     }
 }
