@@ -72,30 +72,19 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
 //        return CollectionUtils.map(userAccountList, transformer::transferToBean);
 //    }
 
-//    @Override
-//    public Optional<UserAccountBean> getById(Integer id) {
-//        Optional<UserAccount> optional = userAccountDAO.findById(id);
-//        if (optional.isPresent()) {
-//            UserAccount userAccount = optional.get();
-//            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
-//            return Optional.of(userAccountBean);
-//        } else{
-//            return Optional.empty();
-//        }
-//        if(optional.isPresent()) {
-//            UserAccount userAccount = optional.get();
-//            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
-//            return Optional.of(userAccountBean);
-//        }else{
-//            return Optional.empty();
-//        }
-//
-//    }
-
     @Override
     public Optional<UserAccountBean> getById(Integer id) {
-        return Optional.empty();
+        Optional<UserAccount> optional = userAccountDAO.findById(id);
+        if (optional.isPresent()) {
+            UserAccount userAccount = optional.get();
+            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
+            return Optional.of(userAccountBean);
+        } else{
+            return Optional.empty();
+        }
+
     }
+
 
     @Override
     public List<UserAccountBean> searchAll(Integer tag) {
