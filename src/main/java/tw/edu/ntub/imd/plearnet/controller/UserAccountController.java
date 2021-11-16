@@ -33,6 +33,13 @@ public class UserAccountController {
                 .build();
     }
 
+    @PatchMapping(path = "/login", params = {"id"})
+    public ResponseEntity<String> updateUserAccount(@Valid @RequestParam(name = "id") Integer id, @RequestBody UserAccountBean userAccountBean){
+        userAccountService.update(id, userAccountBean);
+        return ResponseEntityBuilder.success()
+                .message("修改帳戶成功")
+                .build();
+    }
 
 //    @GetMapping(path = "")
 //    public ResponseEntity<String> searchEnable() {
