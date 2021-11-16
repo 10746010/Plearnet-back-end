@@ -46,7 +46,7 @@ public class TopicController {
 
                 Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(userId);
 
-                userAccountBeanOptional.orElseThrow(() ->new RuntimeException("查無此用戶"));
+                userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
                 UserAccountBean userAccountBean = userAccountBeanOptional.get();
 
                 objectData.add("user_name", userAccountBean.getName());
