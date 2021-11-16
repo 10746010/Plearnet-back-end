@@ -2,9 +2,7 @@ package tw.edu.ntub.imd.plearnet.service.impl;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tw.edu.ntub.birc.common.util.CollectionUtils;
 import tw.edu.ntub.birc.common.util.JavaBeanUtils;
-import tw.edu.ntub.imd.plearnet.bean.TagBean;
 import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.UserAccountDAO;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.UserAccount;
@@ -110,7 +108,24 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
 //    }
 
     @Override
+    public UserAccountBean save(UserAccountBean userAccountBean) {
+//        String account = userAccountBean.getAccount();
+//        String name = userAccountBean.getName();
+//        String email = userAccountBean.getEmail();
+//        String password = userAccountBean.getPassword();
+//        String sex = userAccountBean.getSex();
+//        System.out.println(account);
+//        System.out.println(name);
+//        System.out.println(email);
+//        System.out.println(password);
+//        System.out.println(sex);
+        UserAccount userAccount = userAccountDAO.save(transformer.transferToEntity(userAccountBean));
+        return transformer.transferToBean(userAccount);
+    }
+
+    @Override
     public void update(Integer id, UserAccountBean userAccountBean) {
+        System.out.println(id);
         Optional<UserAccount> optional = userAccountDAO.findById(id);
         if (optional.isPresent()) {
             UserAccount userAccount = optional.get();
@@ -119,21 +134,5 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
         } else {
             throw new NotFoundException("找不到資料, id = " + id);
         }
-    }
-
-    @Override
-    public UserAccountBean save(UserAccountBean userAccountBean) {
-        String account = userAccountBean.getAccount();
-        String name = userAccountBean.getName();
-        String email = userAccountBean.getEmail();
-        String password = userAccountBean.getPassword();
-        String sex = userAccountBean.getSex();
-        System.out.println(account);
-        System.out.println(name);
-        System.out.println(email);
-        System.out.println(password);
-        System.out.println(sex);
-        UserAccount userAccount = userAccountDAO.save(transformer.transferToEntity(userAccountBean));
-        return transformer.transferToBean(userAccount);
     }
 }
