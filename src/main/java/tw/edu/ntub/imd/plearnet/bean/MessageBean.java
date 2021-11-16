@@ -12,7 +12,7 @@ public class MessageBean {
     @Size(max = 50, message = "筆記內容 - 輸入字數大於{max}個字")
     private String content;
     @NotNull(message = "留言者 - 未填寫")
-    private Integer userid;
+    private Integer userId;
     @Null(message = "id - 不得填寫")
     private Integer id;
 }
