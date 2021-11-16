@@ -13,11 +13,20 @@ import java.time.LocalDateTime;
 @Table(name = "useraccount", schema = Config.DATABASE_NAME)
 public class UserAccount {
     /**
-     * 帳號
+     * 編號
      *
      * @since 1.0.0
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", length = 11, nullable = false)
+    private Integer id;
+
+    /**
+     * 帳號
+     *
+     * @since 1.0.0
+     */
     @Column(name = "account", length = 50, nullable = false)
     private String account;
 
@@ -34,15 +43,8 @@ public class UserAccount {
      *
      * @since 1.0.0
      */
-    @Column(name = "email", length = 50, nullable = true)
+    @Column(name = "email", length = 50, nullable = false)
     private String email;
-    /**
-     * 編號
-     *
-     * @since 1.0.0
-     */
-    @Column(name = "id", length = 11, nullable = true)
-    private Integer id;
 
     /**
      * 用戶名
@@ -67,5 +69,4 @@ public class UserAccount {
      */
     @Column(name = "registered",nullable = false)
     private LocalDateTime register;
-
 }
