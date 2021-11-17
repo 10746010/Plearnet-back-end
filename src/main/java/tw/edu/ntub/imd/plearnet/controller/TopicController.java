@@ -143,4 +143,20 @@ public class TopicController {
                 .build();
     }
 
+    @DeleteMapping(path = "/delNote")
+    public ResponseEntity<String> delTopic(@RequestParam(name = "topicId") Integer topicId){
+        topicService.delete(topicId);
+        return ResponseEntityBuilder.success()
+                .message("文章刪除成功")
+                .build();
+    }
+
+    @DeleteMapping(path = "/delMessage")
+    public ResponseEntity<String> delMessage(@RequestParam(name = "messageId") Integer messageId){
+        messageService.delete(messageId);
+        return ResponseEntityBuilder.success()
+                .message("留言刪除成功")
+                .build();
+    }
+
 }
