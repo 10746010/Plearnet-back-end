@@ -24,6 +24,7 @@ public class TopicBean {
     private LocalDateTime editDate;
     @NotNull(message = "筆記分類 - 未填寫")
     private Integer tagId;
+    @NotNull(message = "作者id - 未填寫")
     private Integer author;
     private List<MessageBean> messageBeanList;
     private Integer messageId;
