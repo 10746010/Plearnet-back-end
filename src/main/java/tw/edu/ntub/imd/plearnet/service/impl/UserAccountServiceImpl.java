@@ -73,4 +73,14 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
             throw new NotFoundException("找不到資料, id = " + id);
         }
     }
+
+    @Override
+    public Boolean getByUsername(String username) {
+        Optional<UserAccount> optional = userAccountDAO.findByUsername(username);
+        if (optional.isPresent()) {
+            return true;
+        } else{
+            return false;
+        }
+    }
 }
