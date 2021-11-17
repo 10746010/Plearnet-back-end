@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TopicServiceImpl extends BaseServiceImpl<TopicBean, Topic, String> implements TopicService {
+public class TopicServiceImpl extends BaseServiceImpl<TopicBean, Topic, Integer> implements TopicService {
     private final TopicDAO topicDAO;
     private final TopicTransformer transformer;
     private final MessageDAO messageDAO;
@@ -35,18 +35,6 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicBean, Topic, String> 
     public TopicBean save(TopicBean topicBean){
         Topic topic = topicDAO.save(transformer.transferToEntity(topicBean));
         return transformer.transferToBean(topic);
-    }
-
-    @Override
-    public Optional<TopicBean> getById(Integer id) {
-        Optional<Topic> optional = topicDAO.findById(id);
-        if (optional.isPresent()) {
-            Topic topic = optional.get();
-            TopicBean topicBean = transformer.transferToBean(topic);
-            return Optional.of(topicBean);
-        } else{
-            return Optional.empty();
-        }
     }
 
     @Override

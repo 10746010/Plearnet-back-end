@@ -9,8 +9,6 @@ import java.util.Optional;
 public interface BaseViewService<B, ID> {
     Optional<B> getById(ID id);
 
-    Optional<B> getById(Integer id);
-
     List<B> searchAll(Integer tag);
 
     List<B> searchAll(Pager pager);

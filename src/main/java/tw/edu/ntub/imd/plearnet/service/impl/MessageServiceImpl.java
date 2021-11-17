@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MessageServiceImpl extends BaseServiceImpl<MessageBean, Message, String> implements MessageService {
+public class MessageServiceImpl extends BaseServiceImpl<MessageBean, Message, Integer> implements MessageService {
     private final MessageDAO messageDAO;
     private final MessageTransformer transformer;
 

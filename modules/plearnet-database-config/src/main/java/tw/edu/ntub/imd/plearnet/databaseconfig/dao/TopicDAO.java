@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TopicDAO extends BaseDAO<Topic, String>{
+public interface TopicDAO extends BaseDAO<Topic, Integer>{
     List<Topic> findByTagId(Integer tag);
 
     Optional<Topic> findById(Integer id);

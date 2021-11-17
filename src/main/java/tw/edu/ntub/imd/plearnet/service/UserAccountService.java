@@ -6,5 +6,4 @@ import java.util.Optional;
 
 public interface UserAccountService extends BaseService<UserAccountBean, Integer> {
     public void update(Integer id, UserAccountBean userAccountBean);
-    public Optional<UserAccountBean> getById(Integer id);
 }

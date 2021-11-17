@@ -4,6 +4,6 @@ import org.springframework.stereotype.Repository;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.History;
 
 @Repository
-public interface HistoryDAO extends BaseDAO<History,String>{
+public interface HistoryDAO extends BaseDAO<History,Integer>{
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MessageDAO extends BaseDAO<Message, String>{
+public interface MessageDAO extends BaseDAO<Message, Integer>{
     List<Message> findByTopicId(Integer topicID);
 
     Optional<Message> findById(Integer id);
