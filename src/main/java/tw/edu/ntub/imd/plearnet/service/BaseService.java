@@ -6,8 +6,6 @@ public interface BaseService<B, ID> extends BaseViewService<B, ID> {
 
     void update(ID id, B b);
 
-    void update(Integer id, B b);
-
     void delete(ID id);
 
 

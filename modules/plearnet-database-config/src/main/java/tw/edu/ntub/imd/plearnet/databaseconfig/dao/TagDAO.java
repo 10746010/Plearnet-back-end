@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TagDAO extends BaseDAO<Tag, String>{
+public interface TagDAO extends BaseDAO<Tag, Integer>{
     List<Tag> findByTagType(Integer tagType);
 
     Optional<Tag> findById(Integer id);

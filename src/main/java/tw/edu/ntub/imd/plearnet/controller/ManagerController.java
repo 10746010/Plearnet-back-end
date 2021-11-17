@@ -36,4 +36,12 @@ public class ManagerController {
                 .build();
     }
 
+    @DeleteMapping(path = "/delTag")
+    public ResponseEntity<String> delTag(@RequestParam(name = "tagId") Integer tagId){
+        tagService.delete(tagId);
+        return ResponseEntityBuilder.success()
+                .message("Tag刪除成功")
+                .build();
+    }
+
 }

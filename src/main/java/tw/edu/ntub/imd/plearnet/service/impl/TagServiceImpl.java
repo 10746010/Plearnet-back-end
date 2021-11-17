@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TagServiceImpl extends BaseServiceImpl<TagBean, Tag, String> implements TagService {
+public class TagServiceImpl extends BaseServiceImpl<TagBean, Tag, Integer> implements TagService {
     private final TagDAO tagDAO;
     private final TagTransformer transformer;
 
