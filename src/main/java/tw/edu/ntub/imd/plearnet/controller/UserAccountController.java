@@ -72,6 +72,7 @@ public class UserAccountController {
                     .build();
         }
     }
+
 //    @GetMapping(path = "")
 //    public ResponseEntity<String> searchEnable() {
 //        ArrayData arrayData = new ArrayData();

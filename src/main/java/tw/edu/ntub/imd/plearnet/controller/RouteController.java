@@ -46,13 +46,62 @@ public class RouteController {
 //        return mav;
 //    }
 
-    @GetMapping("/login")
-    public ResponseEntity<String> login() {
+    @GetMapping("/loginView")
+    public ResponseEntity<String> loginView() {
         ArrayData dataNode = new ArrayData();
         return ResponseEntityBuilder.success()
                 .message("成功進入登入頁面")
                 .data(dataNode)
                 .build();
+    }
+
+//    @GetMapping("/login")
+//    public ResponseEntity<String> loginGet(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
+//        System.out.println("成功進入登入");
+//        System.out.println("userAccountBean.getUsername(): " + userAccountBean.getUsername());
+//        System.out.println("userAccountBean.getPassword(): " + userAccountBean.getPassword());
+//        BindingResultUtils.validate((bindingResult));
+//        Boolean usernameExists  =  userAccountService.getByUsername(userAccountBean.getUsername());
+//
+//        if(usernameExists.equals(false)) {
+//            return ResponseEntityBuilder.error()
+//                    .message("沒有此帳號")
+//                    .build();
+//        } else{
+//            String username = userAccountBean.getUsername();
+//
+//            return ResponseEntityBuilder.success()
+//                    .message("登入成功")
+//                    .build();
+//        }
+//    }
+
+    @PostMapping("/loginUserAccount")
+    public ResponseEntity<String> login(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
+        System.out.println("成功進入登入Post");
+        System.out.println("userAccountBean.getUsername(): " + userAccountBean.getUsername());
+        System.out.println("userAccountBean.getPassword(): " + userAccountBean.getPassword());
+
+        BindingResultUtils.validate((bindingResult));
+        Boolean usernameExists  =  userAccountService.getByUsername(userAccountBean.getUsername());
+
+        if(usernameExists.equals(false)) {
+            return ResponseEntityBuilder.error()
+                    .message("沒有此帳號")
+                    .build();
+        } else{
+            UserAccountBean usernameBean = userAccountService.getUserAccountByUsername(userAccountBean.getUsername());
+            if (userAccountBean.getPassword().equals(usernameBean.getPassword())){
+                return ResponseEntityBuilder.success()
+                        .message("登入成功")
+                        .build();
+            } else {
+               return ResponseEntityBuilder.error()
+                        .message("沒有此帳號密碼")
+                        .build();
+            }
+
+        }
     }
 
 //    @GetMapping("/register")
@@ -88,11 +137,6 @@ public class RouteController {
 
 
     }
-//    @GetMapping("/self")
-//    public ModelAndView self() {
-//        ModelAndView mav = new ModelAndView("/self");
-//        return mav;
-//    }
 
 //    @PatchMapping(path = "/account", params = {"id"})
 //    public ResponseEntity<String> updateAccount(@RequestParam(name = "id") String userid, @RequestBody UserAccountBean userAccountBean) {

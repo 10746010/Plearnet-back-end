@@ -1,5 +1,6 @@
 package tw.edu.ntub.imd.plearnet.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserAccountDAO userAccountDAO;
 
+    @Autowired
     public UserDetailsServiceImpl(UserAccountDAO userAccountDAO) {
         this.userAccountDAO = userAccountDAO;
     }
@@ -24,6 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("result.getUsername() " + username);
 
         Optional<UserAccount> userAccountList = userAccountDAO.findByUsername(username);
+//        if (userAccountList.isPresent()) {
+//            UserAccount userAccount = userAccountList.get();
+//            return (UserDetails) userAccount;
+//        } else {
+//            throw new UsernameNotFoundException("請檢查帳號密碼是否錯誤");
+//        }
         UserAccount result = userAccountList.orElseThrow(() -> new UsernameNotFoundException("帳號或密碼錯誤"));
         System.out.println("result.getUsername() " + result.getUsername());
         System.out.println("result.getPassword() " + result.getPassword());
