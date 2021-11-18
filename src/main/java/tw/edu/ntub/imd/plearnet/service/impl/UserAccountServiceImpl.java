@@ -83,4 +83,12 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
             return false;
         }
     }
+
+    @Override
+    public UserAccountBean getUserAccountByUsername(String username) {
+        Optional<UserAccount> optional = userAccountDAO.findByUsername(username);
+        UserAccount userAccount = optional.get();
+        UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
+        return userAccountBean;
+    }
 }
