@@ -29,7 +29,7 @@ public class Config implements WebMvcConfigurer {
     @Autowired
     public Config(FileProperties fileProperties) {
         this.fileProperties = fileProperties;
-        System.out.println(new BCryptPasswordEncoder().encode("plearnetManager"));
+        System.out.println("password密文: " + new BCryptPasswordEncoder().encode("plearnetManager"));
     }
 
     @Bean
