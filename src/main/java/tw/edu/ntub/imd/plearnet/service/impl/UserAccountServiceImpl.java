@@ -41,11 +41,6 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
     }
 
     @Override
-    public List<UserAccountBean> searchAll(Integer tag) {
-        return CollectionUtils.map(userAccountDAO.findAll(), transformer::transferToBean);
-    }
-
-    @Override
     public UserAccountBean save(UserAccountBean userAccountBean) {
 //        String username = userAccountBean.getUsername();
 //        String name = userAccountBean.getName();

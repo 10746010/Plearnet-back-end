@@ -64,7 +64,6 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicBean, Topic, Integer>
         return topicBeanList;
     }
 
-    @Override
     public List<TopicBean> searchAll(Integer tag){
         return CollectionUtils.map(topicDAO.findByTagId(tag),transformer :: transferToBean);
     }

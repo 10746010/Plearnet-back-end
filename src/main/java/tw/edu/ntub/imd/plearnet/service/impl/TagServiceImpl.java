@@ -50,8 +50,6 @@ public class TagServiceImpl extends BaseServiceImpl<TagBean, Tag, Integer> imple
 
     }
 
-    @Override
-    public List<TagBean> searchAll(Integer tagType){
-        return CollectionUtils.map(tagDAO.findByTagType(tagType),transformer :: transferToBean);
-    }
+
+
 }

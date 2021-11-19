@@ -84,10 +84,10 @@ public class TopicController {
         }
 
     @GetMapping(path = "/tagList")
-    public ResponseEntity<String> tagList(@RequestParam(name = "tagType") Integer tagType){
+    public ResponseEntity<String> tagList(){
        ArrayData arrayData = new ArrayData();
 
-       for(TagBean tagBean : tagService.searchAll(tagType)){
+       for(TagBean tagBean : tagService.searchAll()){
            ObjectData objectData = arrayData.addObject();
            objectData.add("id",tagBean.getId());
            objectData.add("name",tagBean.getName());
@@ -99,21 +99,21 @@ public class TopicController {
                .build();
     }
 
-    @GetMapping(path = "/tagSearch")
-    public ResponseEntity<String> tagSearch(@RequestParam(name = "tag") Integer tag){
-        ArrayData arrayData = new ArrayData();
-
-        for(TopicBean topicBean : topicService.searchAll(tag)){
-            ObjectData objectData = arrayData.addObject();
-            objectData.add("id",topicBean.getId());
-            objectData.add("title",topicBean.getTitle());
-        }
-
-        return ResponseEntityBuilder.success()
-                .message("查詢成功")
-                .data(arrayData)
-                .build();
-    }
+//    @GetMapping(path = "/tagSearch")
+//    public ResponseEntity<String> tagSearch(@RequestParam(name = "tag") Integer tag){
+//        ArrayData arrayData = new ArrayData();
+//
+//        for(TopicBean topicBean : topicService.searchAll(tag)){
+//            ObjectData objectData = arrayData.addObject();
+//            objectData.add("id",topicBean.getId());
+//            objectData.add("title",topicBean.getTitle());
+//        }
+//
+//        return ResponseEntityBuilder.success()
+//                .message("查詢成功")
+//                .data(arrayData)
+//                .build();
+//    }
 
     @PostMapping(path = "/postNote")
     public ResponseEntity<String> createTopic(@Valid @RequestBody TopicBean topicBean,
