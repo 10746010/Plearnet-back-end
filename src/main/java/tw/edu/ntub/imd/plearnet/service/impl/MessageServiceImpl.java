@@ -44,7 +44,5 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageBean, Message, In
     @Override
     public Optional<MessageBean> getById(Integer id){return Optional.empty(); }
 
-    @Override
-    public List<MessageBean> searchAll(Integer id){return null;}
 
 }

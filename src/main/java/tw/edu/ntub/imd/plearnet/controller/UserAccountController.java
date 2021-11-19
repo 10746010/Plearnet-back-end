@@ -45,7 +45,7 @@ public class UserAccountController {
 
     @GetMapping(path = "/login/searchAll")
     public ResponseEntity<String> searchAll() {
-        List<UserAccountBean> userAccountBeanList =  userAccountService.searchAll(1);
+        List<UserAccountBean> userAccountBeanList =  userAccountService.searchAll();
         UserAccountBean userAccountBean = userAccountBeanList.get(0);
         String username = userAccountBean.getUsername();
         System.out.println(username);
