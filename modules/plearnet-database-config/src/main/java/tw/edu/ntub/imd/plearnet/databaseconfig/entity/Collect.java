@@ -24,7 +24,16 @@ public class Collect {
      *
      * @Since 1.0.1
      */
-    @Id
     @Column(name = "user_id", nullable = false)
     private Integer userId;
+
+    /**
+     * Collect的ID
+     *
+     * @Since 1.0.1
+     */
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 }
