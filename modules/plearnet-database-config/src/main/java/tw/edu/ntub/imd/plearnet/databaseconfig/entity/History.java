@@ -26,9 +26,18 @@ public class History {
      *
      * @Since 1.0.1
      */
-    @Id
     @Column(name = "user_id", nullable = false)
     private Integer userId;
+
+    /**
+     * History的ID
+     *
+     * @Since 1.0.1
+     */
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     /**
      * 瀏覽時間
