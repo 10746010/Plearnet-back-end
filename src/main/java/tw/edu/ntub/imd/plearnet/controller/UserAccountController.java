@@ -5,9 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import tw.edu.ntub.imd.plearnet.bean.CollectBean;
+import tw.edu.ntub.imd.plearnet.bean.HistoryBean;
 import tw.edu.ntub.imd.plearnet.bean.TopicBean;
 import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
 import tw.edu.ntub.imd.plearnet.service.CollectService;
+import tw.edu.ntub.imd.plearnet.service.HistoryService;
 import tw.edu.ntub.imd.plearnet.service.TopicService;
 import tw.edu.ntub.imd.plearnet.service.UserAccountService;
 import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
@@ -26,6 +28,7 @@ public class UserAccountController {
     private final UserAccountService userAccountService;
     private final CollectService collectService;
     private final TopicService topicService;
+    private final HistoryService historyService;
 
     @GetMapping(path = "/login")
     public ResponseEntity<String> login() {
@@ -81,8 +84,42 @@ public class UserAccountController {
         }
     }
 
+    @GetMapping(path = "/historySearch")
+    public ResponseEntity<String> historySearch(@RequestParam(name = "userId") Integer userId){
+        ArrayData arrayData = new ArrayData();
+
+        for(HistoryBean historyBean : historyService.searchAll(userId)){
+            ObjectData objectData = arrayData.addObject();
+            objectData.add("topic_id",historyBean.getTopicId());
+
+            Integer topicId = historyBean.getTopicId();
+
+            Optional<TopicBean> topicBeanOptional = topicService.getById(topicId);
+
+            topicBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            TopicBean topicBean = topicBeanOptional.get();
+
+            objectData.add("title", topicBean.getTitle());
+
+            Integer author = topicBean.getAuthor();
+
+            Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+            userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+            objectData.add("author", userAccountBean.getName());
+
+        }
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(arrayData)
+                .build();
+    }
+
     @GetMapping(path = "/collectSearch")
-    public ResponseEntity<String> tagSearch(@RequestParam(name = "userId") Integer userId){
+    public ResponseEntity<String> collectSearch(@RequestParam(name = "userId") Integer userId){
         ArrayData arrayData = new ArrayData();
 
         for(CollectBean collectBean : collectService.searchAll(userId)){
