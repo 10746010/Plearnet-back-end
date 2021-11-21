@@ -5,16 +5,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import tw.edu.ntub.imd.plearnet.bean.MessageBean;
-import tw.edu.ntub.imd.plearnet.bean.TagBean;
-import tw.edu.ntub.imd.plearnet.bean.TopicBean;
-import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
+import tw.edu.ntub.imd.plearnet.bean.*;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Message;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Topic;
-import tw.edu.ntub.imd.plearnet.service.MessageService;
-import tw.edu.ntub.imd.plearnet.service.TagService;
-import tw.edu.ntub.imd.plearnet.service.TopicService;
-import tw.edu.ntub.imd.plearnet.service.UserAccountService;
+import tw.edu.ntub.imd.plearnet.service.*;
 import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
 import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
@@ -31,6 +25,7 @@ public class TopicController {
     private final TagService tagService;
     private final UserAccountService userAccountService;
     private final MessageService messageService;
+    private final CollectService collectService;
 
     @GetMapping(path = "/topic")
         public ResponseEntity<String> topicGet(@RequestParam(name = "topicID") Integer topicID){
@@ -97,6 +92,16 @@ public class TopicController {
                .message("查詢成功")
                .data(arrayData)
                .build();
+    }
+
+    @PostMapping(path = "/addCollect")
+    public  ResponseEntity<String> createCollect(@Valid @RequestBody CollectBean collectBean,
+                                                 BindingResult bindingResult){
+        BindingResultUtils.validate(bindingResult);
+        collectService.save(collectBean);
+        return ResponseEntityBuilder.success()
+                .message("收藏筆記成功")
+                .build();
     }
 
 //    @GetMapping(path = "/tagSearch")
