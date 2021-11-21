@@ -1,5 +1,6 @@
 package tw.edu.ntub.imd.plearnet.service.impl;
 
+import org.springframework.stereotype.Service;
 import tw.edu.ntub.birc.common.util.CollectionUtils;
 import tw.edu.ntub.imd.plearnet.bean.CollectBean;
 import tw.edu.ntub.imd.plearnet.bean.HistoryBean;
@@ -10,6 +11,7 @@ import tw.edu.ntub.imd.plearnet.service.transformer.HistoryTransformer;
 
 import java.util.List;
 
+@Service
 public class HistoryServiceImpl extends BaseServiceImpl<HistoryBean, History, Integer> implements HistoryService {
     private final HistoryDAO historyDAO;
     private final HistoryTransformer transformer;
