@@ -45,7 +45,6 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
 
     @Override
     public void update(Integer id, UserAccountBean userAccountBean) {
-        System.out.println(id);
         Optional<UserAccount> optional = userAccountDAO.findById(id);
         if (optional.isPresent()) {
             UserAccount userAccount = optional.get();
@@ -57,7 +56,7 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
     }
 
     @Override
-    public Boolean getByAccount(String account) {
+    public Boolean accountExsist(String account) {
         Optional<UserAccount> optional = userAccountDAO.findByAccount(account);
         if (optional.isPresent()) {
             return true;
@@ -67,10 +66,14 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
     }
 
     @Override
-    public UserAccountBean getUserAccountByAccount(String account) {
+    public Optional<UserAccountBean> getByAccount(String account) {
         Optional<UserAccount> optional = userAccountDAO.findByAccount(account);
-        UserAccount userAccount = optional.get();
-        UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
-        return userAccountBean;
+        if (optional.isPresent()) {
+            UserAccount userAccount = optional.get();
+            UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
+            return Optional.of(userAccountBean);
+        } else{
+            return Optional.empty();
+        }
     }
 }
