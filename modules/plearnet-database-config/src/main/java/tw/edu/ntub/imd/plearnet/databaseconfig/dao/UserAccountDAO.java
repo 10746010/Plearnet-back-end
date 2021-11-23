@@ -13,5 +13,5 @@ public interface UserAccountDAO extends BaseDAO<UserAccount, Integer> {
 
     Optional<UserAccount> findById(Integer id);
 
-    Optional<UserAccount> findByUsername(String username);
+    Optional<UserAccount> findByAccount(String account);
 }

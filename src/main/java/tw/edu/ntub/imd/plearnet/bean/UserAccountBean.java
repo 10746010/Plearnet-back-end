@@ -15,7 +15,7 @@ public class UserAccountBean {
 
     @NotBlank(message = "帳號 - 未填寫")
     @Size(max = 50, message = "帳號 - 輸入字數大於{max}個字")
-    private String username;
+    private String account;
 
     @NotBlank(message = "密碼 - 未填寫")
     @Size(max = 50, message = "密碼 - 輸入字數大於{max}個字")

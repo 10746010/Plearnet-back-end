@@ -20,12 +20,6 @@ import javax.validation.Valid;
 public class RouteController {
     private final UserAccountService userAccountService;
 
-//    @GetMapping("/")
-//    public ModelAndView index() {
-//        ModelAndView mav = new ModelAndView("/login_new");
-//        return mav;
-//    }
-
     @GetMapping(path = "/")
     public ResponseEntity<String> index() {
         ArrayData dataNode = new ArrayData();
@@ -34,17 +28,6 @@ public class RouteController {
                 .data(dataNode)
                 .build();
     }
-
-//    @GetMapping("/login")
-//    public ModelAndView login() {
-//        ModelAndView mav = new ModelAndView("/login");
-////        try {
-////
-////        } catch (Exception e) {
-////            e.printStackTrace();
-////        }
-//        return mav;
-//    }
 
     @GetMapping("/loginView")
     public ResponseEntity<String> loginView() {
@@ -55,42 +38,21 @@ public class RouteController {
                 .build();
     }
 
-//    @GetMapping("/login")
-//    public ResponseEntity<String> loginGet(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
-//        System.out.println("成功進入登入");
-//        System.out.println("userAccountBean.getUsername(): " + userAccountBean.getUsername());
-//        System.out.println("userAccountBean.getPassword(): " + userAccountBean.getPassword());
-//        BindingResultUtils.validate((bindingResult));
-//        Boolean usernameExists  =  userAccountService.getByUsername(userAccountBean.getUsername());
-//
-//        if(usernameExists.equals(false)) {
-//            return ResponseEntityBuilder.error()
-//                    .message("沒有此帳號")
-//                    .build();
-//        } else{
-//            String username = userAccountBean.getUsername();
-//
-//            return ResponseEntityBuilder.success()
-//                    .message("登入成功")
-//                    .build();
-//        }
-//    }
-
     @PostMapping("/loginUserAccount")
     public ResponseEntity<String> login(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
         System.out.println("成功進入登入Post");
-        System.out.println("userAccountBean.getUsername(): " + userAccountBean.getUsername());
+        System.out.println("userAccountBean.getUsername(): " + userAccountBean.getAccount());
         System.out.println("userAccountBean.getPassword(): " + userAccountBean.getPassword());
 
         BindingResultUtils.validate((bindingResult));
-        Boolean usernameExists  =  userAccountService.getByUsername(userAccountBean.getUsername());
+        Boolean usernameExists  =  userAccountService.getByAccount(userAccountBean.getAccount());
 
         if(usernameExists.equals(false)) {
             return ResponseEntityBuilder.error()
                     .message("沒有此帳號")
                     .build();
         } else{
-            UserAccountBean usernameBean = userAccountService.getUserAccountByUsername(userAccountBean.getUsername());
+            UserAccountBean usernameBean = userAccountService.getUserAccountByAccount(userAccountBean.getAccount());
             if (userAccountBean.getPassword().equals(usernameBean.getPassword())){
                 return ResponseEntityBuilder.success()
                         .message("登入成功")
@@ -104,12 +66,6 @@ public class RouteController {
         }
     }
 
-//    @GetMapping("/register")
-//    public ModelAndView register() {
-//        ModelAndView mav = new ModelAndView("/register_new");
-//        return mav;
-//    }
-
     @GetMapping("/register")
     public ResponseEntity<String> register() {
         ArrayData dataNode = new ArrayData();
@@ -122,7 +78,7 @@ public class RouteController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
         BindingResultUtils.validate(bindingResult);
-        Boolean usernameExists  =  userAccountService.getByUsername(userAccountBean.getUsername());
+        Boolean usernameExists  =  userAccountService.getByAccount(userAccountBean.getAccount());
 
         if(usernameExists.equals(true)) {
             return ResponseEntityBuilder.error()
@@ -137,12 +93,4 @@ public class RouteController {
 
 
     }
-
-//    @PatchMapping(path = "/account", params = {"id"})
-//    public ResponseEntity<String> updateAccount(@RequestParam(name = "id") String userid, @RequestBody UserAccountBean userAccountBean) {
-//        userAccountService.update(userid, userAccountBean);
-//        return ResponseEntityBuilder.success()
-//                .message("修改成功")
-//                .build();
-//    }
 }
