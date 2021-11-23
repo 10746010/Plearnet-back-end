@@ -17,6 +17,7 @@ import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
 import tw.edu.ntub.imd.plearnet.util.json.object.ObjectData;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -149,6 +150,34 @@ public class UserAccountController {
         return ResponseEntityBuilder.success()
                 .message("查詢成功")
                 .data(arrayData)
+                .build();
+    }
+
+    @GetMapping(path = "/userSearch")
+    public ResponseEntity<String> userSearch(@RequestParam(name = "userId") Integer userId){
+
+        ObjectData objectData = new ObjectData();
+
+        Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(userId);
+
+        userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+        UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+        objectData.add("name", userAccountBean.getName());
+
+        String sex = new String();
+        if (userAccountBean.getSex().equals("0")){
+            sex = "男";
+        }else{
+            sex = "女";
+        }
+
+        objectData.add("sex", sex);
+        objectData.add("email", userAccountBean.getEmail());
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(objectData)
                 .build();
     }
 
