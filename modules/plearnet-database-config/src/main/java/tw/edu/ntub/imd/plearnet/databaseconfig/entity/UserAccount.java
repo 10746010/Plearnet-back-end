@@ -27,8 +27,8 @@ public class UserAccount {
      *
      * @since 1.0.0
      */
-    @Column(name = "username", length = 50, nullable = false)
-    private String username;
+    @Column(name = "account", length = 50, nullable = false)
+    private String account;
 
     /**
      * 密碼，用BCrypt加密

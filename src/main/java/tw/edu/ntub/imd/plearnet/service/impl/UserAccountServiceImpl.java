@@ -2,7 +2,6 @@ package tw.edu.ntub.imd.plearnet.service.impl;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tw.edu.ntub.birc.common.util.CollectionUtils;
 import tw.edu.ntub.birc.common.util.JavaBeanUtils;
 import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.UserAccountDAO;
@@ -11,7 +10,6 @@ import tw.edu.ntub.imd.plearnet.exception.NotFoundException;
 import tw.edu.ntub.imd.plearnet.service.UserAccountService;
 import tw.edu.ntub.imd.plearnet.service.transformer.UserAccountTransformer;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,21 +35,10 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
         } else{
             return Optional.empty();
         }
-
     }
 
     @Override
     public UserAccountBean save(UserAccountBean userAccountBean) {
-//        String username = userAccountBean.getUsername();
-//        String name = userAccountBean.getName();
-//        String email = userAccountBean.getEmail();
-//        String password = userAccountBean.getPassword();
-//        String sex = userAccountBean.getSex();
-//        System.out.println(username);
-//        System.out.println(name);
-//        System.out.println(email);
-//        System.out.println(password);
-//        System.out.println(sex);
         UserAccount userAccount = userAccountDAO.save(transformer.transferToEntity(userAccountBean));
         return transformer.transferToBean(userAccount);
     }
@@ -70,8 +57,8 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
     }
 
     @Override
-    public Boolean getByUsername(String username) {
-        Optional<UserAccount> optional = userAccountDAO.findByUsername(username);
+    public Boolean getByAccount(String account) {
+        Optional<UserAccount> optional = userAccountDAO.findByAccount(account);
         if (optional.isPresent()) {
             return true;
         } else{
@@ -80,8 +67,8 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
     }
 
     @Override
-    public UserAccountBean getUserAccountByUsername(String username) {
-        Optional<UserAccount> optional = userAccountDAO.findByUsername(username);
+    public UserAccountBean getUserAccountByAccount(String account) {
+        Optional<UserAccount> optional = userAccountDAO.findByAccount(account);
         UserAccount userAccount = optional.get();
         UserAccountBean userAccountBean = transformer.transferToBean(userAccount);
         return userAccountBean;

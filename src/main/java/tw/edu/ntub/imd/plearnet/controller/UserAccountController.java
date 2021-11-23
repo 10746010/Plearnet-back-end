@@ -17,7 +17,6 @@ import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
 import tw.edu.ntub.imd.plearnet.util.json.object.ObjectData;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +58,7 @@ public class UserAccountController {
     public ResponseEntity<String> searchAll() {
         List<UserAccountBean> userAccountBeanList =  userAccountService.searchAll();
         UserAccountBean userAccountBean = userAccountBeanList.get(0);
-        String username = userAccountBean.getUsername();
+        String username = userAccountBean.getAccount();
         System.out.println(username);
         return ResponseEntityBuilder.success()
                 .message("查詢帳戶")
@@ -68,12 +67,7 @@ public class UserAccountController {
 
     @GetMapping(path = "/login/getById", params = {"id"})
     public ResponseEntity<String> getById(@Valid @RequestParam(name = "id") Integer id) {
-//        ArrayData arrayData = new ArrayData();
-//        ObjectData objectData = arrayData.addObject();
         Optional<UserAccountBean> userAccountBeanOptional =  userAccountService.getById(id);
-//        userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
-//        UserAccountBean userAccountBean = userAccountBeanOptional.get();
-//        objectData.add("username", userAccountBean.getUsername());
         if(userAccountBeanOptional.isPresent()) {
             return ResponseEntityBuilder.success()
                     .message("查詢指定帳戶成功")
@@ -180,27 +174,4 @@ public class UserAccountController {
                 .data(objectData)
                 .build();
     }
-
-//    @GetMapping(path = "")
-//    public ResponseEntity<String> searchEnable() {
-//        ArrayData arrayData = new ArrayData();
-//        for (UserAccountBean userAccountBean : userAccountService.searchAll(Pager pager)) {
-//            ObjectData objectData = arrayData.addObject();
-//            System.out.println(objectData);
-//        }
-//        return ResponseEntityBuilder.success()
-//                .message("查詢全部成功")
-//                .data(arrayData)
-//                .build();
-//    }
-
-//    @PostMapping(path = "newAccount")
-//    public RequestEntity<String> createAccount(@Valid @RequestBody UserAccountBean userAccountBean,
-//                                               BindingResult bindingResult){
-//        BindingResultUtils.validate(bindingResult);
-//        userAccountService.save(userAccountBean);
-//        return ResponseEntityBuilder.success()
-//                .message("新增帳號成功")
-//                .build();
-//    }
 }

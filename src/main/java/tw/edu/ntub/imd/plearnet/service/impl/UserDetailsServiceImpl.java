@@ -21,23 +21,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
         System.out.println("success into loadUser");
-        System.out.println("result.getUsername() " + username);
+        System.out.println("result.getUsername() " + account);
 
-        Optional<UserAccount> userAccountList = userAccountDAO.findByUsername(username);
-//        if (userAccountList.isPresent()) {
-//            UserAccount userAccount = userAccountList.get();
-//            return (UserDetails) userAccount;
-//        } else {
-//            throw new UsernameNotFoundException("請檢查帳號密碼是否錯誤");
-//        }
+        Optional<UserAccount> userAccountList = userAccountDAO.findByAccount(account);
         UserAccount result = userAccountList.orElseThrow(() -> new UsernameNotFoundException("帳號或密碼錯誤"));
-        System.out.println("result.getUsername() " + result.getUsername());
+        System.out.println("result.getUsername() " + result.getAccount());
         System.out.println("result.getPassword() " + result.getPassword());
 
         return User.builder()
-                .username(result.getUsername())
+                .username(result.getAccount())
                 .password(result.getPassword())
                 .disabled(false)
                 .accountExpired(false)
