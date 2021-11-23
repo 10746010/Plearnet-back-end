@@ -14,6 +14,7 @@ import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -40,26 +41,25 @@ public class RouteController {
 
     @PostMapping("/loginUserAccount")
     public ResponseEntity<String> login(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
-        System.out.println("成功進入登入Post");
-        System.out.println("userAccountBean.getUsername(): " + userAccountBean.getAccount());
-        System.out.println("userAccountBean.getPassword(): " + userAccountBean.getPassword());
 
         BindingResultUtils.validate((bindingResult));
-        Boolean usernameExists  =  userAccountService.getByAccount(userAccountBean.getAccount());
+        Boolean usernameExists  =  userAccountService.accountExsist(userAccountBean.getAccount());
 
         if(usernameExists.equals(false)) {
             return ResponseEntityBuilder.error()
                     .message("沒有此帳號")
                     .build();
         } else{
-            UserAccountBean usernameBean = userAccountService.getUserAccountByAccount(userAccountBean.getAccount());
+            Optional<UserAccountBean> usernameBeanOptional = userAccountService.getByAccount(userAccountBean.getAccount());
+
+            UserAccountBean usernameBean = usernameBeanOptional.get();
             if (userAccountBean.getPassword().equals(usernameBean.getPassword())){
                 return ResponseEntityBuilder.success()
                         .message("登入成功")
                         .build();
             } else {
                return ResponseEntityBuilder.error()
-                        .message("沒有此帳號密碼")
+                        .message("密碼錯誤")
                         .build();
             }
 
@@ -78,7 +78,7 @@ public class RouteController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
         BindingResultUtils.validate(bindingResult);
-        Boolean usernameExists  =  userAccountService.getByAccount(userAccountBean.getAccount());
+        Boolean usernameExists  =  userAccountService.accountExsist(userAccountBean.getAccount());
 
         if(usernameExists.equals(true)) {
             return ResponseEntityBuilder.error()
