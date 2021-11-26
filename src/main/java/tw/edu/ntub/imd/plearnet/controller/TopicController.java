@@ -26,9 +26,11 @@ public class TopicController {
     private final UserAccountService userAccountService;
     private final MessageService messageService;
     private final CollectService collectService;
+    private final HistoryService historyService;
 
     @GetMapping(path = "/topic")
-        public ResponseEntity<String> topicGet(@RequestParam(name = "topicID") Integer topicID){
+        public ResponseEntity<String> topicGet(@RequestParam(name = "topicID") Integer topicID
+                                               ,@Valid @RequestBody HistoryBean historyBean,BindingResult bindingResult){
             ArrayData arrayData = new ArrayData();
 
             for (TopicBean topicBean : topicService.searchMessageByTopicID(topicID)) {
@@ -70,11 +72,13 @@ public class TopicController {
 
             objectData.add("author_name", userAccountBean.getName());
 
+            BindingResultUtils.validate(bindingResult);
+            historyService.save(historyBean);
+
             return  ResponseEntityBuilder.success()
-                    .message("查詢成功")
+                    .message("查詢成功 & 歷史紀錄成功")
                     .data(arrayData)
                     .build();
-
 
         }
 
