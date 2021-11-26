@@ -147,6 +147,20 @@ public class UserAccountController {
                 .build();
     }
 
+    @DeleteMapping(path = "/collectDelete")
+    public ResponseEntity collectDelete(@Valid @RequestBody CollectBean collectBean){
+        Optional<CollectBean> collectBeanOptional = collectService.getByUserIdAndTopicId(collectBean.getUserId(),collectBean.getTopicId());
+
+        collectBeanOptional.orElseThrow(() -> new RuntimeException("查無紀錄"));
+        CollectBean collectBean1 = collectBeanOptional.get();
+
+        collectService.delete(collectBean1.getId());
+
+        return ResponseEntityBuilder.success()
+                .message("刪除成功")
+                .build();
+    }
+
     @GetMapping(path = "/userSearch")
     public ResponseEntity<String> userSearch(@RequestParam(name = "userId") Integer userId){
 

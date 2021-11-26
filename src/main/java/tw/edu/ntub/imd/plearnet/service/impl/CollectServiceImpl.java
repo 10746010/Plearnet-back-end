@@ -30,6 +30,17 @@ public class CollectServiceImpl extends BaseServiceImpl<CollectBean, Collect, In
         return transformer.transferToBean(collect);
     }
 
+    public Optional<CollectBean> getByUserIdAndTopicId(Integer userId, Integer topicId){
+        Optional<Collect> optional = collectDAO.getByUserIdAndTopicId(userId,topicId);
+        if (optional.isPresent()) {
+            Collect collect = optional.get();
+            CollectBean collectBean = transformer.transferToBean(collect);
+            return Optional.of(collectBean);
+        } else {
+            return Optional.empty();
+        }
+    }
+
     @Override
     public void update(Integer id, CollectBean collectBean) {
         Optional<Collect> optional = collectDAO.findById(id);
