@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TopicService extends BaseService<TopicBean, Integer>{
     List<TopicBean> searchMessageByTopicID(Integer topicID);
+    List<TopicBean> searchAll(Integer tag);
 }

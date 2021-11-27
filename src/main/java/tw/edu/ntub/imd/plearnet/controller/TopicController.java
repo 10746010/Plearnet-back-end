@@ -108,21 +108,23 @@ public class TopicController {
                 .build();
     }
 
-//    @GetMapping(path = "/tagSearch")
-//    public ResponseEntity<String> tagSearch(@RequestParam(name = "tag") Integer tag){
-//        ArrayData arrayData = new ArrayData();
-//
-//        for(TopicBean topicBean : topicService.searchAll(tag)){
-//            ObjectData objectData = arrayData.addObject();
-//            objectData.add("id",topicBean.getId());
-//            objectData.add("title",topicBean.getTitle());
-//        }
-//
-//        return ResponseEntityBuilder.success()
-//                .message("查詢成功")
-//                .data(arrayData)
-//                .build();
-//    }
+    @GetMapping(path = "/tagSearch")
+    public ResponseEntity<String> tagSearch(@RequestParam(name = "tag") Integer tag){
+        ArrayData arrayData = new ArrayData();
+
+        for(TopicBean topicBean : topicService.searchAll(tag)){
+            ObjectData objectData = arrayData.addObject();
+            objectData.add("id",topicBean.getId());
+            objectData.add("title",topicBean.getTitle());
+        }
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(arrayData)
+                .build();
+    }
+
+    
 
     @PostMapping(path = "/postNote")
     public ResponseEntity<String> createTopic(@Valid @RequestBody TopicBean topicBean,
