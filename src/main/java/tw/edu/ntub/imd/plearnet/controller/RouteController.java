@@ -43,7 +43,7 @@ public class RouteController {
     public ResponseEntity<String> login(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
 
         BindingResultUtils.validate((bindingResult));
-        Boolean usernameExists  =  userAccountService.accountExsist(userAccountBean.getAccount());
+        Boolean usernameExists  =  userAccountService.accountExist(userAccountBean.getAccount());
 
         if(usernameExists.equals(false)) {
             return ResponseEntityBuilder.error()
@@ -78,7 +78,7 @@ public class RouteController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody UserAccountBean userAccountBean, BindingResult bindingResult) {
         BindingResultUtils.validate(bindingResult);
-        Boolean usernameExists  =  userAccountService.accountExsist(userAccountBean.getAccount());
+        Boolean usernameExists  =  userAccountService.accountExist(userAccountBean.getAccount());
 
         if(usernameExists.equals(true)) {
             return ResponseEntityBuilder.error()

@@ -6,6 +6,6 @@ import java.util.Optional;
 
 public interface UserAccountService extends BaseService<UserAccountBean, Integer> {
     public void update(Integer id, UserAccountBean userAccountBean);
-    public Boolean accountExsist(String account);
+    public Boolean accountExist(String account);
     public Optional<UserAccountBean> getByAccount(String account);
     }
