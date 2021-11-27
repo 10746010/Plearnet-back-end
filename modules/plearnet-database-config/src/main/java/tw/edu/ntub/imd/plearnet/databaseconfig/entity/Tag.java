@@ -29,12 +29,12 @@ public class Tag {
     @Column(name = "name", length = 20, nullable = false)
     private String name;
 
-    /**
-     * Tag類型(0:非學科，1:學科)
-     *
-     * @since 1.0.0
-     */
-    @Column(name = "tag_type", nullable = false)
-    private Integer tagType;
+//    /**
+//     * Tag類型(0:非學科，1:學科)
+//     *
+//     * @since 1.0.0
+//     */
+//    @Column(name = "tag_type", nullable = false)
+//    private Integer tagType;
 
 }

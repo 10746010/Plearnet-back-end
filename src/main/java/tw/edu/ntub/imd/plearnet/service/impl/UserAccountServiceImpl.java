@@ -56,7 +56,7 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountBean, Use
     }
 
     @Override
-    public Boolean accountExsist(String account) {
+    public Boolean accountExist(String account) {
         Optional<UserAccount> optional = userAccountDAO.findByAccount(account);
         if (optional.isPresent()) {
             return true;

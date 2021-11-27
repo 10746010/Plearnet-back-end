@@ -54,6 +54,9 @@ public class TopicController {
             topicBeanOptional.orElseThrow(() -> new RuntimeException("查無此筆記"));
             TopicBean topicBean = topicBeanOptional.get();
 
+            topicBean.setView(topicBean.getView()+1);
+            topicService.update(topicID, topicBean);
+
             ObjectData objectData = arrayData.addObject();
             objectData.add("view", topicBean.getView());
             objectData.add("likes", topicBean.getLikes());
@@ -108,21 +111,53 @@ public class TopicController {
                 .build();
     }
 
-//    @GetMapping(path = "/tagSearch")
-//    public ResponseEntity<String> tagSearch(@RequestParam(name = "tag") Integer tag){
-//        ArrayData arrayData = new ArrayData();
-//
-//        for(TopicBean topicBean : topicService.searchAll(tag)){
-//            ObjectData objectData = arrayData.addObject();
-//            objectData.add("id",topicBean.getId());
-//            objectData.add("title",topicBean.getTitle());
-//        }
-//
-//        return ResponseEntityBuilder.success()
-//                .message("查詢成功")
-//                .data(arrayData)
-//                .build();
-//    }
+    @GetMapping(path = "/tagSearch")
+    public ResponseEntity<String> tagSearch(@RequestParam(name = "tag") Integer tag){
+        ArrayData arrayData = new ArrayData();
+
+        for(TopicBean topicBean : topicService.searchAll(tag)){
+            ObjectData objectData = arrayData.addObject();
+            objectData.add("id",topicBean.getId());
+            objectData.add("title",topicBean.getTitle());
+        }
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(arrayData)
+                .build();
+    }
+
+    @GetMapping(path = "/keySearch")
+    public ResponseEntity<String> keySearch(@RequestParam(name = "key") String key){
+        ArrayData arrayData = new ArrayData();
+
+        for(TagBean tagBean : tagService.searchAll()){
+            String tagName = tagBean.getName();
+
+            if (tagName.contains(key)){
+                ObjectData objectData = arrayData.addObject();
+
+                objectData.add("id",tagBean.getId());
+                objectData.add("title",tagBean.getName());
+            }
+        }
+
+        for(TopicBean topicBean : topicService.searchAll()){
+            String title = topicBean.getTitle();
+
+            if (title.contains(key)){
+                ObjectData objectData = arrayData.addObject();
+
+                objectData.add("id",topicBean.getId());
+                objectData.add("title",topicBean.getTitle());
+            }
+        }
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(arrayData)
+                .build();
+    }
 
     @PostMapping(path = "/postNote")
     public ResponseEntity<String> createTopic(@Valid @RequestBody TopicBean topicBean,

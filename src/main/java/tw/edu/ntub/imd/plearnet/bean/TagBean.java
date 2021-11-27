@@ -10,6 +10,6 @@ public class TagBean {
     private Integer id;
     @NotBlank(message = "tag名稱 - 未填寫")
     private String name;
-    @NotNull(message = "tag類別 - 未填寫")
-    private Integer tagType;
+//    @NotNull(message = "tag類別 - 未填寫")
+//    private Integer tagType;
 }
