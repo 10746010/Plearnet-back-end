@@ -101,6 +101,26 @@ public class TopicController {
                .build();
     }
 
+    @GetMapping(path = "/pressLike")
+    public ResponseEntity<String> pressLike(@RequestParam(name  = "topicId") Integer topicId){
+        Optional<TopicBean> topicBeanOptional = topicService.getById(topicId);
+
+        topicBeanOptional.orElseThrow(() -> new RuntimeException("查無此筆記"));
+        TopicBean topicBean = topicBeanOptional.get();
+
+        topicBean.setLikes(topicBean.getLikes()+1);
+        topicService.save(topicBean);
+
+        ObjectData objectData = new ObjectData();
+        objectData.add("likes", topicBean.getLikes());
+
+        return ResponseEntityBuilder.success()
+                .message("按讚成功")
+                .data(objectData)
+                .build();
+
+    }
+
     @PostMapping(path = "/addCollect")
     public  ResponseEntity<String> createCollect(@Valid @RequestBody CollectBean collectBean,
                                                  BindingResult bindingResult){
