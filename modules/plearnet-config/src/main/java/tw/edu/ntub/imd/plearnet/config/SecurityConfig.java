@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "http://211.75.1.204:50001",
                 "http://localhost:3000",
                 "http://localhost:8081",
-                "http://case411008.hopto.org/"
+                "http://case411008.hopto.org"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
