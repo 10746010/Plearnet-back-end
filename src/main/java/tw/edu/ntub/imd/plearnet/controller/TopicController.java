@@ -112,6 +112,15 @@ public class TopicController {
                 ObjectData objectData = arrayData.addObject();
                 objectData.add("id",topicBean.getId());
                 objectData.add("title",topicBean.getTitle());
+
+                Integer author = topicBean.getAuthor();
+
+                Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+                userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+                UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+                objectData.add("author", userAccountBean.getName());
             }
         }
 
@@ -159,6 +168,15 @@ public class TopicController {
             ObjectData objectData = arrayData.addObject();
             objectData.add("id",topicBean.getId());
             objectData.add("title",topicBean.getTitle());
+
+            Integer author = topicBean.getAuthor();
+
+            Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+            userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+            objectData.add("author", userAccountBean.getName());
         }
 
         return ResponseEntityBuilder.success()
@@ -178,7 +196,7 @@ public class TopicController {
                 ObjectData objectData = arrayData.addObject();
 
                 objectData.add("id",tagBean.getId());
-                objectData.add("title",tagBean.getName());
+                objectData.add("name",tagBean.getName());
             }
         }
 
@@ -190,6 +208,15 @@ public class TopicController {
 
                 objectData.add("id",topicBean.getId());
                 objectData.add("title",topicBean.getTitle());
+
+                Integer author = topicBean.getAuthor();
+
+                Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+                userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+                UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+                objectData.add("author", userAccountBean.getName());
             }
         }
 
