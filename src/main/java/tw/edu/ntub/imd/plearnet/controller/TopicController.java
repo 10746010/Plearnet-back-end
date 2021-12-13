@@ -88,10 +88,10 @@ public class TopicController {
         }
 
     @GetMapping(path = "/tagList")
-    public ResponseEntity<String> tagList(){
+    public ResponseEntity<String> tagList(@RequestParam(name  = "tagType") Integer tagType){
        ArrayData arrayData = new ArrayData();
 
-       for(TagBean tagBean : tagService.searchAll()){
+       for(TagBean tagBean : tagService.searchAll(tagType)){
            ObjectData objectData = arrayData.addObject();
            objectData.add("id",tagBean.getId());
            objectData.add("name",tagBean.getName());
@@ -101,6 +101,24 @@ public class TopicController {
                .message("查詢成功")
                .data(arrayData)
                .build();
+    }
+
+    @GetMapping(path = "/tagTypeSearch")
+    public ResponseEntity<String> tagTypeSearch(@RequestParam(name  = "tagType") Integer tagType){
+        ArrayData arrayData = new ArrayData();
+
+        for(TagBean tagBean : tagService.searchAll(tagType)){
+            for(TopicBean topicBean : topicService.searchAll(tagBean.getId())){
+                ObjectData objectData = arrayData.addObject();
+                objectData.add("id",topicBean.getId());
+                objectData.add("title",topicBean.getTitle());
+            }
+        }
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(arrayData)
+                .build();
     }
 
     @GetMapping(path = "/pressLike")

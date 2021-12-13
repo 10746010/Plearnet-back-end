@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface TagDAO extends BaseDAO<Tag, Integer>{
-//    List<Tag> findByTagType(Integer tagType);
-
+    List<Tag> findByTagType(Integer tagType);
     Optional<Tag> findById(Integer id);
 }
