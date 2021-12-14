@@ -5,6 +5,7 @@ import tw.edu.ntub.birc.common.util.CollectionUtils;
 import tw.edu.ntub.birc.common.util.JavaBeanUtils;
 import tw.edu.ntub.imd.plearnet.bean.MessageBean;
 import tw.edu.ntub.imd.plearnet.bean.TagBean;
+import tw.edu.ntub.imd.plearnet.bean.TopicBean;
 import tw.edu.ntub.imd.plearnet.databaseconfig.dao.TagDAO;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Message;
 import tw.edu.ntub.imd.plearnet.databaseconfig.entity.Tag;
@@ -50,6 +51,7 @@ public class TagServiceImpl extends BaseServiceImpl<TagBean, Tag, Integer> imple
 
     }
 
-
-
+    public List<TagBean> searchAll(Integer tagType){
+        return CollectionUtils.map(tagDAO.findByTagType(tagType),transformer :: transferToBean);
+    }
 }
