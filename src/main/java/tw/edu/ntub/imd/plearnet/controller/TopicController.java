@@ -88,10 +88,10 @@ public class TopicController {
         }
 
     @GetMapping(path = "/tagList")
-    public ResponseEntity<String> tagList(){
+    public ResponseEntity<String> tagList(@RequestParam(name  = "tagType") Integer tagType){
        ArrayData arrayData = new ArrayData();
 
-       for(TagBean tagBean : tagService.searchAll()){
+       for(TagBean tagBean : tagService.searchAll(tagType)){
            ObjectData objectData = arrayData.addObject();
            objectData.add("id",tagBean.getId());
            objectData.add("name",tagBean.getName());
@@ -101,6 +101,33 @@ public class TopicController {
                .message("查詢成功")
                .data(arrayData)
                .build();
+    }
+
+    @GetMapping(path = "/tagTypeSearch")
+    public ResponseEntity<String> tagTypeSearch(@RequestParam(name  = "tagType") Integer tagType){
+        ArrayData arrayData = new ArrayData();
+
+        for(TagBean tagBean : tagService.searchAll(tagType)){
+            for(TopicBean topicBean : topicService.searchAll(tagBean.getId())){
+                ObjectData objectData = arrayData.addObject();
+                objectData.add("id",topicBean.getId());
+                objectData.add("title",topicBean.getTitle());
+
+                Integer author = topicBean.getAuthor();
+
+                Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+                userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+                UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+                objectData.add("author", userAccountBean.getName());
+            }
+        }
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(arrayData)
+                .build();
     }
 
     @GetMapping(path = "/pressLike")
@@ -141,6 +168,15 @@ public class TopicController {
             ObjectData objectData = arrayData.addObject();
             objectData.add("id",topicBean.getId());
             objectData.add("title",topicBean.getTitle());
+
+            Integer author = topicBean.getAuthor();
+
+            Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+            userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+            objectData.add("author", userAccountBean.getName());
         }
 
         return ResponseEntityBuilder.success()
@@ -160,7 +196,7 @@ public class TopicController {
                 ObjectData objectData = arrayData.addObject();
 
                 objectData.add("id",tagBean.getId());
-                objectData.add("title",tagBean.getName());
+                objectData.add("name",tagBean.getName());
             }
         }
 
@@ -172,6 +208,15 @@ public class TopicController {
 
                 objectData.add("id",topicBean.getId());
                 objectData.add("title",topicBean.getTitle());
+
+                Integer author = topicBean.getAuthor();
+
+                Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+                userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+                UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+                objectData.add("author", userAccountBean.getName());
             }
         }
 
