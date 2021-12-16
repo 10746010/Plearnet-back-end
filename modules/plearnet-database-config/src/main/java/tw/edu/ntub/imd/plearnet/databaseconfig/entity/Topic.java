@@ -37,7 +37,7 @@ public class Topic {
      *
      * @Since 1.0.1
      */
-    @Column(name= "content", length = 200, nullable = false)
+    @Column(name= "content", length = 8000, nullable = false)
     private String content;
 
     /**

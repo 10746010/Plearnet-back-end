@@ -1,22 +1,23 @@
 package tw.edu.ntub.imd.plearnet.controller;
 
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import tw.edu.ntub.imd.plearnet.bean.CollectBean;
-import tw.edu.ntub.imd.plearnet.bean.HistoryBean;
-import tw.edu.ntub.imd.plearnet.bean.TopicBean;
-import tw.edu.ntub.imd.plearnet.bean.UserAccountBean;
-import tw.edu.ntub.imd.plearnet.service.CollectService;
-import tw.edu.ntub.imd.plearnet.service.HistoryService;
-import tw.edu.ntub.imd.plearnet.service.TopicService;
-import tw.edu.ntub.imd.plearnet.service.UserAccountService;
+import org.springframework.web.multipart.MultipartFile;
+import tw.edu.ntub.imd.plearnet.bean.*;
+import tw.edu.ntub.imd.plearnet.service.*;
 import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
 import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
 import tw.edu.ntub.imd.plearnet.util.json.object.ObjectData;
+import tw.edu.ntub.imd.plearnet.util.jwtutil;
 
+import java.awt.*;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class UserAccountController {
     private final CollectService collectService;
     private final TopicService topicService;
     private final HistoryService historyService;
+    private final TagService tagService;
 
     @GetMapping(path = "/login")
     public ResponseEntity<String> login() {
@@ -79,11 +81,36 @@ public class UserAccountController {
         }
     }
 
-    @GetMapping(path = "/historySearch")
-    public ResponseEntity<String> historySearch(@RequestParam(name = "userId") Integer userId){
-        ArrayData arrayData = new ArrayData();
+    @GetMapping(path = "/getUserId")
+    public ResponseEntity<String> getUserId(HttpServletRequest request){
 
-        for(HistoryBean historyBean : historyService.searchAll(userId)){
+        jwtutil jwt = new jwtutil();
+
+        String user = jwt.parseToken(request.getHeader("token"));
+
+        Integer id = Integer.parseInt(user.split(" ")[1]);
+
+        ObjectData objectData = new ObjectData();
+
+        objectData.add("user_id",id);
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(objectData)
+                .build();
+    }
+
+    @GetMapping(path = "/historySearch")
+    public ResponseEntity<String> historySearch(HttpServletRequest request){
+            ArrayData arrayData = new ArrayData();
+
+            jwtutil jwt = new jwtutil();
+
+            String user = jwt.parseToken(request.getHeader("token"));
+
+            Integer id = Integer.parseInt(user.split(" ")[1]);
+
+            for(HistoryBean historyBean : historyService.searchAll(id)){
             ObjectData objectData = arrayData.addObject();
             objectData.add("topic_id",historyBean.getTopicId());
 
@@ -105,6 +132,12 @@ public class UserAccountController {
 
             objectData.add("author", userAccountBean.getName());
 
+            Optional<TagBean> tagBeanOptional = tagService.getById(topicBean.getTagId());
+            tagBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            TagBean tagBean = tagBeanOptional.get();
+
+            objectData.add("tag_name", tagBean.getName());
+
         }
 
         return ResponseEntityBuilder.success()
@@ -114,10 +147,16 @@ public class UserAccountController {
     }
 
     @GetMapping(path = "/collectSearch")
-    public ResponseEntity<String> collectSearch(@RequestParam(name = "userId") Integer userId){
+    public ResponseEntity<String> collectSearch(HttpServletRequest request){
         ArrayData arrayData = new ArrayData();
 
-        for(CollectBean collectBean : collectService.searchAll(userId)){
+        jwtutil jwt = new jwtutil();
+
+        String user = jwt.parseToken(request.getHeader("token"));
+
+        Integer id = Integer.parseInt(user.split(" ")[1]);
+
+        for(CollectBean collectBean : collectService.searchAll(id)){
             ObjectData objectData = arrayData.addObject();
             objectData.add("topic_id",collectBean.getTopicId());
 
@@ -139,6 +178,12 @@ public class UserAccountController {
 
             objectData.add("author", userAccountBean.getName());
 
+            Optional<TagBean> tagBeanOptional = tagService.getById(topicBean.getTagId());
+            tagBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            TagBean tagBean = tagBeanOptional.get();
+
+            objectData.add("tag_name", tagBean.getName());
+
         }
 
         return ResponseEntityBuilder.success()
@@ -146,6 +191,15 @@ public class UserAccountController {
                 .data(arrayData)
                 .build();
     }
+
+    @PatchMapping(path = "/editUser")
+    public ResponseEntity<String> updateUser(@RequestBody UserAccountBean userAccountBean){
+        userAccountService.update(userAccountBean.getId(), userAccountBean);
+        return ResponseEntityBuilder.success()
+                .message("修改成功")
+                .build();
+    }
+
 
     @DeleteMapping(path = "/collectDelete")
     public ResponseEntity collectDelete(@Valid @RequestBody CollectBean collectBean){
@@ -161,12 +215,89 @@ public class UserAccountController {
                 .build();
     }
 
+    @GetMapping(path = "/myNote")
+    public ResponseEntity<String> myNote(HttpServletRequest request){
+        ArrayData arrayData = new ArrayData();
+
+        jwtutil jwt = new jwtutil();
+
+        String user = jwt.parseToken(request.getHeader("token"));
+
+        Integer id = Integer.parseInt(user.split(" ")[1]);
+
+        for(TopicBean topicBean : topicService.searchAllByAuthor(id)){
+            ObjectData objectData = arrayData.addObject();
+            objectData.add("id",topicBean.getId());
+            objectData.add("title",topicBean.getTitle());
+
+            Integer author = topicBean.getAuthor();
+
+            Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+            userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+            objectData.add("author", userAccountBean.getName());
+
+            Optional<TagBean> tagBeanOptional = tagService.getById(topicBean.getTagId());
+            tagBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            TagBean tagBean = tagBeanOptional.get();
+
+            objectData.add("tag_name", tagBean.getName());
+
+        }
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(arrayData)
+                .build();
+    }
+
+    @PostMapping(path = "/uploadUserPic")
+    public ResponseEntity<String> uploadUserPic(@RequestParam("file")MultipartFile file,HttpServletRequest request) throws IOException {
+        if(!file.isEmpty()){
+
+            Base64 base64 = new Base64();
+            String data = base64.encodeToString(file.getBytes());
+
+            jwtutil jwt = new jwtutil();
+
+            String user = jwt.parseToken(request.getHeader("token"));
+
+            Integer id = Integer.parseInt(user.split(" ")[1]);
+
+            Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(id);
+
+            userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+            userAccountBean.setUserPic(data);
+
+            userAccountService.update(id, userAccountBean);
+
+            return ResponseEntityBuilder.success()
+                    .message(data)
+                    .build();
+        }else{
+            return ResponseEntityBuilder.success()
+                    .message("上傳失敗")
+                    .build();
+        }
+    }
+
     @GetMapping(path = "/userSearch")
-    public ResponseEntity<String> userSearch(@RequestParam(name = "userId") Integer userId){
+    public ResponseEntity<String> userSearch(HttpServletRequest request){
+
+        jwtutil jwt = new jwtutil();
+
+        String user = jwt.parseToken(request.getHeader("token"));
+
+        String name = user.split(" ")[0];
+        Integer id = Integer.parseInt(user.split(" ")[1]);
 
         ObjectData objectData = new ObjectData();
 
-        Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(userId);
+        Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(id);
 
         userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
         UserAccountBean userAccountBean = userAccountBeanOptional.get();
@@ -174,7 +305,7 @@ public class UserAccountController {
         objectData.add("name", userAccountBean.getName());
 
         String sex = new String();
-        if (userAccountBean.getSex().equals("0")){
+        if (userAccountBean.getSex() == 0){
             sex = "男";
         }else{
             sex = "女";

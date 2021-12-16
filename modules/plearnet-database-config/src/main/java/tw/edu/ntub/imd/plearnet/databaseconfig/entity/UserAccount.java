@@ -60,7 +60,7 @@ public class UserAccount {
      * @since 1.0.0
      */
     @Column(name = "sex",length = 1,nullable = false)
-    private String sex;
+    private Integer sex;
 
     /**
      * 註冊時間
@@ -69,4 +69,12 @@ public class UserAccount {
      */
     @Column(name = "registered",nullable = false)
     private LocalDateTime register;
+
+    /**
+     * 頭像
+     *
+     * @since 1.0.0
+     */
+    @Column(name = "user_pic",nullable = false)
+    private LocalDateTime userPic;
 }

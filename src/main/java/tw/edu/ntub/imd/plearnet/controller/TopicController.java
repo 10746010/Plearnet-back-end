@@ -13,8 +13,12 @@ import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
 import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
 import tw.edu.ntub.imd.plearnet.util.json.object.ObjectData;
+import tw.edu.ntub.imd.plearnet.util.jwtutil;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -28,64 +32,135 @@ public class TopicController {
     private final CollectService collectService;
     private final HistoryService historyService;
 
+    @GetMapping(path = "/simpleTopic")
+    public ResponseEntity<String> simpleTopicGet(@RequestParam(name = "topicID") Integer topicID) {
+        ArrayData arrayData = new ArrayData();
+
+        Optional<TopicBean> topicBeanOptional = topicService.getById(topicID);
+
+        topicBeanOptional.orElseThrow(() -> new RuntimeException("查無此筆記"));
+        TopicBean topicBean = topicBeanOptional.get();
+
+        ObjectData objectData = arrayData.addObject();
+        objectData.add("title", topicBean.getTitle());
+        objectData.add("content", topicBean.getContent());
+
+        return  ResponseEntityBuilder.success()
+                .message("查詢成功 & 歷史紀錄成功")
+                .data(arrayData)
+                .build();
+
+    }
+
     @GetMapping(path = "/topic")
-        public ResponseEntity<String> topicGet(@RequestParam(name = "topicID") Integer topicID,@RequestParam(name = "userID") Integer userID){
-            ArrayData arrayData = new ArrayData();
+    public ResponseEntity<String> topicGet(@RequestParam(name = "topicID") Integer topicID,
+                                           //@RequestParam(name = "userID") Integer userID,
+                                           HttpServletRequest request) {
+        ArrayData arrayData = new ArrayData();
 
-            for (TopicBean topicBean : topicService.searchMessageByTopicID(topicID)) {
-                ObjectData objectData = arrayData.addObject();
-                objectData.add("message_id",topicBean.getMessageId());
-                objectData.add("user_id", topicBean.getUserId());
-                objectData.add("message_content", topicBean.getMessageContent());
+        jwtutil jwt = new jwtutil();
 
-                Integer userId = topicBean.getUserId();
+        String user = jwt.parseToken(request.getHeader("token"));
 
-                Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(userId);
+        Integer id = Integer.parseInt(user.split(" ")[1]);
 
-                userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
-                UserAccountBean userAccountBean = userAccountBeanOptional.get();
-
-                objectData.add("user_name", userAccountBean.getName());
-            }
-
-            Optional<TopicBean> topicBeanOptional = topicService.getById(topicID);
-
-            topicBeanOptional.orElseThrow(() -> new RuntimeException("查無此筆記"));
-            TopicBean topicBean = topicBeanOptional.get();
-
-            topicBean.setView(topicBean.getView()+1);
-            topicService.update(topicID, topicBean);
-
+        for (TopicBean topicBean : topicService.searchMessageByTopicID(topicID)) {
             ObjectData objectData = arrayData.addObject();
-            objectData.add("view", topicBean.getView());
-            objectData.add("likes", topicBean.getLikes());
-            objectData.add("title", topicBean.getTitle());
-            objectData.add("content", topicBean.getContent());
-            objectData.add("create_date", topicBean.getCreateDate());
-            objectData.add("edit_date", topicBean.getEditDate());
-            objectData.add("author",topicBean.getAuthor());
+            objectData.add("message_id",topicBean.getMessageId());
+            objectData.add("user_id", topicBean.getUserId());
+            objectData.add("message_content", topicBean.getMessageContent());
 
-            Integer userId = topicBean.getAuthor();
+            Integer userId = topicBean.getUserId();
 
             Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(userId);
 
-            userAccountBeanOptional.orElseThrow(() ->new RuntimeException("查無此用戶"));
+            userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
             UserAccountBean userAccountBean = userAccountBeanOptional.get();
 
-            objectData.add("author_name", userAccountBean.getName());
-
-            HistoryBean historyBean = new HistoryBean();
-
-            historyBean.setTopicId(topicID);
-            historyBean.setUserId(userID);
-            historyService.save(historyBean);
-
-            return  ResponseEntityBuilder.success()
-                    .message("查詢成功 & 歷史紀錄成功")
-                    .data(arrayData)
-                    .build();
-
+            objectData.add("user_name", userAccountBean.getName());
         }
+
+        Optional<TopicBean> topicBeanOptional = topicService.getById(topicID);
+
+        topicBeanOptional.orElseThrow(() -> new RuntimeException("查無此筆記"));
+        TopicBean topicBean = topicBeanOptional.get();
+
+        topicBean.setView(topicBean.getView()+1);
+        topicService.update(topicID, topicBean);
+
+        ObjectData objectData = arrayData.addObject();
+        objectData.add("view", topicBean.getView());
+        objectData.add("likes", topicBean.getLikes());
+        objectData.add("title", topicBean.getTitle());
+        objectData.add("content", topicBean.getContent());
+        objectData.add("create_date", topicBean.getCreateDate());
+        objectData.add("edit_date", topicBean.getEditDate());
+        objectData.add("author",topicBean.getAuthor());
+
+        Integer userId = topicBean.getAuthor();
+
+        Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(userId);
+
+        userAccountBeanOptional.orElseThrow(() ->new RuntimeException("查無此用戶"));
+        UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+        objectData.add("author_name", userAccountBean.getName());
+
+        HistoryBean historyBean = new HistoryBean();
+
+        historyBean.setTopicId(topicID);
+        historyBean.setUserId(id);
+//          BindingResultUtils.validate(bindingResult);
+        historyService.save(historyBean);
+
+        return  ResponseEntityBuilder.success()
+                .message("查詢成功 & 歷史紀錄成功")
+                .data(arrayData)
+                .build();
+
+    }
+
+    @GetMapping(path = "/test")
+    public ResponseEntity<String> test(HttpServletRequest request){
+        ObjectData objectData = new ObjectData();
+
+        jwtutil jwt = new jwtutil();
+
+        String token = request.getHeader("token");
+
+        String ans = jwt.parseToken(token);
+
+        objectData.add("user",ans);
+
+        if(token == null){
+            return  ResponseEntityBuilder.success()
+                    .message("查詢false")
+                    .data(objectData)
+                    .build();
+        }else {
+            return  ResponseEntityBuilder.success()
+                    .message("查詢成功")
+                    .data(objectData)
+                    .build();
+        }
+
+    }
+
+    @GetMapping(path = "/test2")
+    public ResponseEntity<String> test2(@RequestParam(name = "token")String token){
+        ObjectData objectData = new ObjectData();
+
+        jwtutil jwt = new jwtutil();
+
+        String ans = jwt.parseToken(token);
+
+        objectData.add("user",ans);
+
+        return  ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(objectData)
+                .build();
+    }
 
     @GetMapping(path = "/tagList")
     public ResponseEntity<String> tagList(@RequestParam(name  = "tagType") Integer tagType){
@@ -126,6 +201,13 @@ public class TopicController {
                 UserAccountBean userAccountBean = userAccountBeanOptional.get();
 
                 objectData.add("author", userAccountBean.getName());
+
+                Optional<TagBean> tagBeanOptional1 = tagService.getById(topicBean.getTagId());
+                tagBeanOptional1.orElseThrow(() -> new RuntimeException("查無此用戶"));
+                TagBean tagBean1 = tagBeanOptional.get();
+
+                objectData.add("tag_name", tagBean1.getName());
+
             }
         }
 
@@ -190,20 +272,34 @@ public class TopicController {
                 .build();
     }
 
+    @GetMapping(path = "/swopSearch")
+    public ResponseEntity<String> swopSearch(){
+        ArrayData arrayData = new ArrayData();
+
+        for(TopicBean topicBean : topicService.searchAll(13)){
+            ObjectData objectData = arrayData.addObject();
+            objectData.add("id",topicBean.getId());
+            objectData.add("title",topicBean.getTitle());
+
+            Integer author = topicBean.getAuthor();
+
+            Optional<UserAccountBean> userAccountBeanOptional = userAccountService.getById(author);
+
+            userAccountBeanOptional.orElseThrow(() -> new RuntimeException("查無此用戶"));
+            UserAccountBean userAccountBean = userAccountBeanOptional.get();
+
+            objectData.add("author", userAccountBean.getName());
+        }
+
+        return ResponseEntityBuilder.success()
+                .message("查詢成功")
+                .data(arrayData)
+                .build();
+    }
+
     @GetMapping(path = "/keySearch")
     public ResponseEntity<String> keySearch(@RequestParam(name = "key") String key){
         ArrayData arrayData = new ArrayData();
-
-        for(TagBean tagBean : tagService.searchAll()){
-            String tagName = tagBean.getName();
-
-            if (tagName.contains(key)){
-                ObjectData objectData = arrayData.addObject();
-
-                objectData.add("id",tagBean.getId());
-                objectData.add("name",tagBean.getName());
-            }
-        }
 
         for(TopicBean topicBean : topicService.searchAll()){
             String title = topicBean.getTitle();
