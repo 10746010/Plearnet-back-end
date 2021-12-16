@@ -29,4 +29,5 @@ dependencies {
 	annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.4.22.Final'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }

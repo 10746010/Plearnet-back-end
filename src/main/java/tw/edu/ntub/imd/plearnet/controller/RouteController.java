@@ -12,6 +12,10 @@ import tw.edu.ntub.imd.plearnet.service.UserAccountService;
 import tw.edu.ntub.imd.plearnet.util.http.BindingResultUtils;
 import tw.edu.ntub.imd.plearnet.util.http.ResponseEntityBuilder;
 import tw.edu.ntub.imd.plearnet.util.json.array.ArrayData;
+import tw.edu.ntub.imd.plearnet.util.jwtutil;
+
+import io.jsonwebtoken.*;
+import tw.edu.ntub.imd.plearnet.util.json.object.ObjectData;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -53,9 +57,18 @@ public class RouteController {
             Optional<UserAccountBean> usernameBeanOptional = userAccountService.getByAccount(userAccountBean.getAccount());
 
             UserAccountBean usernameBean = usernameBeanOptional.get();
+
+            jwtutil jwtutil = new jwtutil();
+
+            String token = jwtutil.generateToken(usernameBean.getName(),usernameBean.getId(),usernameBean.getSex(),usernameBean.getEmail());
+
+            ObjectData objectData = new ObjectData();
+            objectData.add("token",token);
+
             if (userAccountBean.getPassword().equals(usernameBean.getPassword())){
                 return ResponseEntityBuilder.success()
                         .message("登入成功")
+                        .data(objectData)
                         .build();
             } else {
                return ResponseEntityBuilder.error()

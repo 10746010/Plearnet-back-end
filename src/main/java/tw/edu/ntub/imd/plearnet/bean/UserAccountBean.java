@@ -28,8 +28,10 @@ public class UserAccountBean {
     @Size(max = 10, message = "姓名 - 輸入字數大於{max}個字")
     private String name;
 
-    private String sex;
+    private Integer sex;
 
     @Null(message = "註冊時間 - 不得填寫")
     private LocalDateTime register;
+
+    private String userPic;
 }
