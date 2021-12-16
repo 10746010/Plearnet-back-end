@@ -107,8 +107,13 @@ public class TopicController {
     public ResponseEntity<String> tagTypeSearch(@RequestParam(name  = "tagType") Integer tagType){
         ArrayData arrayData = new ArrayData();
 
-        for(TagBean tagBean : tagService.searchAll(tagType)){
-            for(TopicBean topicBean : topicService.searchAll(tagBean.getId())){
+        for(TopicBean topicBean : topicService.searchAll()){
+
+            Optional<TagBean> tagBeanOptional = tagService.getById(topicBean.getTagId());
+
+            TagBean tagBean = tagBeanOptional.get();
+
+            if (tagBean.getTagType() == tagType){
                 ObjectData objectData = arrayData.addObject();
                 objectData.add("id",topicBean.getId());
                 objectData.add("title",topicBean.getTitle());
