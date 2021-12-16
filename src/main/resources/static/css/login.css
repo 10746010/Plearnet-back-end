@@ -1,0 +1,54 @@
+body {
+    background-image: url(../img/bg.jpg);
+    color: white;
+}
+
+.login {
+    text-align: left;
+}
+
+.account {
+    align-items: left;
+}
+
+.password {
+    align-items: left;
+}
+
+.loginImg {
+    margin-left: 90px;
+}
+
+.title {
+    text-align: left;
+    color: white;
+    font-size: 50px;
+}
+
+.text{
+    text-align:start;
+    margin-left: 60px;
+}
+
+.imgBg{
+    position: relative;
+    top: -500px;
+    right: -600px;
+}
+
+.inputbox{
+    text-align: left;
+    padding-top: 100px;
+}
+
+.content{
+    display: flex;
+}
+
+.left{
+    margin-left: 50px;
+}
+
+.registerImg{
+    margin-left: 120px;
+}

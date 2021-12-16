@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags" lang="zh-TW">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入</title>
+    <link rel="stylesheet" th:href="@{/static/css/login.css}" href="../static/css/login.css">
+</head>
+
+<body>
+    <div id="login" class="login">
+        <form name="formLogin" class="my-5 px-5" th:action="@{/login}" method="post">
+            <div class="contents">
+                <div class="left">
+                    <div class="title">Plearnet<br>
+                    </div>
+                    <div class="text">
+                        <label>登入</label>
+                    </div>
+                    <div class="inputbox">
+                        <div class="account">
+                            <br>
+                            <input id="username" name="username" type="text"  placeholder="請輸入帳號" value="">
+                        </div>
+
+                        <div class="password">
+                            <br>
+                            <input id="password" name="password" type="password" placeholder="請輸入密碼" value="">
+                        </div>
+                        <div class="loginImg">
+                            <img src="../static/img/lb.png" width="100px">
+                        </div>
+                        <div class="registerImg">
+                            <a href="../templates/register.html">
+                                <img src="../static/img/registerbutton.png" width="80px">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="imgBg">
+                            <img src="../static/img/loginBg.png" width="1000px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

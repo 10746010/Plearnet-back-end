@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'org.springframework.boot' version '2.3.7.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
 }
@@ -44,7 +44,7 @@ subprojects {
     repositories {
         mavenCentral()
         maven {
-            url 'http://140.131.115.47:8081/repository/maven-releases/'
+            url 'http://140.131.115.59:8081/repository/maven-releases/'
             credentials {
                 username "downloader"
                 password "c.42j0 zj4yk6bp6"
@@ -79,7 +79,7 @@ configurations {
 repositories {
     mavenCentral()
     maven {
-        url 'http://140.131.115.47:8081/repository/maven-releases/'
+        url 'http://140.131.115.59:8081/repository/maven-releases/'
         credentials {
             username "downloader"
             password "c.42j0 zj4yk6bp6"
@@ -90,16 +90,21 @@ repositories {
 dependencies {
     implementation project('modules:plearnet-config')
     implementation project('modules:plearnet-database-config')
-    implementation 'tw.edu.ntub.birc:common:1.0.6'
+    implementation 'tw.edu.ntub.birc:common:1.1.0'
     implementation 'org.yaml:snakeyaml:1.26'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.0'
     implementation 'org.apache.commons:commons-text:1.8'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'org.jetbrains:annotations:20.1.0'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'

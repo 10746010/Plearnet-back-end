@@ -39,7 +39,6 @@ public abstract class BaseViewServiceImpl<B, E, ID extends Serializable> impleme
         }
     }
 
-    @Override
     public List<B> searchAll() {
         return CollectionUtils.map(baseDAO.findAll(), transformer::transferToBean);
     }
