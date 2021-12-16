@@ -67,4 +67,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicBean, Topic, Integer>
     public List<TopicBean> searchAll(Integer tag){
         return CollectionUtils.map(topicDAO.findByTagId(tag),transformer :: transferToBean);
     }
+
+    public List<TopicBean> searchAllByAuthor(Integer author){
+        return CollectionUtils.map(topicDAO.findByAuthor(author),transformer :: transferToBean);
+    }
 }
